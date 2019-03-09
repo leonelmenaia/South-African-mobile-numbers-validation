@@ -1,6 +1,6 @@
 version: '2'
 services:
-  api:
+  app:
     image: nginx:latest
     ports:
       - "8080:80"
@@ -14,9 +14,13 @@ services:
     volumes:
       - ./:/app:delegated
   db:
-    image: mysql:5.7
+    image: mariadb:10.1.21
     env_file: .env
-    ports:
-      - '3306:3306'
     volumes:
-      - /var/lib/mysql
+      - ./mariadb/initdb/:/docker-entrypoint-initdb.d
+      - ./mariadb/data/:/var/lib/mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8000:80"
