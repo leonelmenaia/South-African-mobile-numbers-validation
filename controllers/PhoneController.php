@@ -23,8 +23,17 @@ class PhoneController extends BaseController
         ];
     }
 
-    public function actionTest()
+    public function actionValidate()
     {
+        return $this->response->success();
+    }
+
+    public function actionDetails()
+    {
+        return $this->response->success();
+    }
+
+    public function actionValidateFile(){
         return $this->response->success();
     }
 }

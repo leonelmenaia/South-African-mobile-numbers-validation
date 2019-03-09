@@ -15,11 +15,7 @@ services:
       - ./:/app:delegated
   db:
     image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+    env_file: .env
     ports:
       - '3306:3306'
     volumes:
