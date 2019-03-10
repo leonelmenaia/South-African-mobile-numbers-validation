@@ -17,11 +17,9 @@ class PhoneNumberTest extends Unit
         $result = PhoneNumber::validateNumber($phone_id, $phone_number);
 
         $this->assertEquals($result, [
-            'phone_id' => '1',
-            'processed_number' => '27831234567',
-            'validated_number' => '27831234567',
-            'fix_type' => null,
-            'error_type' => null,
+            'phone_identifier' => '1',
+            'file_id' => null,
+            'number' => '27831234567',
             'validated' => true
         ]);
     }
@@ -33,31 +31,42 @@ class PhoneNumberTest extends Unit
 
         $result = PhoneNumber::validateNumber($phone_id, $phone_number);
 
-        $this->assertEquals($result, [
-            'phone_id' => '1',
-            'processed_number' => '831234567',
-            'validated_number' => '27831234567',
-            'fix_type' => PhoneNumber::FIX_ADD_COUNTRY_INDICATIVE,
-            'error_type' => null,
+        $this->assertEquals([
+            'phone_identifier' => '1',
+            'file_id' => null,
+            'number' => '27831234567',
             'validated' => true
-        ]);
+        ], $result);
     }
 
-    public function testValidateCorrectNumberWithStrangeCharacters()
+    public function testValidateCorrectNumberWithNonDigits()
     {
         $phone_id = '1';
         $phone_number = '278ahsadhjahjkhjk31  2345  67shjadajksdjkh';
 
         $result = PhoneNumber::validateNumber($phone_id, $phone_number);
 
-        $this->assertEquals($result, [
-            'phone_id' => '1',
-            'processed_number' => '278ahsadhjahjkhjk31  2345  67shjadajksdjkh',
-            'validated_number' => '27831234567',
-            'fix_type' => PhoneNumber::FIX_REMOVE_NON_DIGITS,
-            'error_type' => null,
+        $this->assertEquals([
+            'phone_identifier' => '1',
+            'file_id' => null,
+            'number' => '27831234567',
             'validated' => true
-        ]);
+        ], $result);
+    }
+
+    public function testValidateCorrectNumberWithNonDigitsAndNoCountryIndicative()
+    {
+        $phone_identifier = '1';
+        $phone_number = '8ahsadhjahjkhjk31  2345  67shjadajksdjkh';
+
+        $result = PhoneNumber::validateNumber($phone_identifier, $phone_number);
+
+        $this->assertEquals([
+            'phone_identifier' => '1',
+            'file_id' => null,
+            'number' => '27831234567',
+            'validated' => true
+        ], $result);
     }
 
 }

@@ -2,38 +2,28 @@
 
 namespace app\models;
 
-
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "phone_number".
  *
  * @property int $id
- * @property int $phone_id
+ * @property int $phone_identifier
  * @property int $file_id
- * @property string $processed_number
- * @property int $validated_number
- * @property string $fix_type
- * @property string $error_type
+ * @property int $number
  * @property int $validated
  * @property string $created_at
+ *
+ * @property File $file
+ * @property PhoneNumberFix[] $phoneNumberFixes
  */
 class PhoneNumber extends ActiveRecord
 {
-
-    //ErrorType
-    const ERROR_INVALID_COUNTRY_INDICATIVE = 'INVALID_COUNTRY_INDICATIVE';
-    const ERROR_LOWER_LENGTH = 'LOWER_LENGTH';
-    const ERROR_HIGHER_LENGTH = 'HIGHER_LENGTH';
-
-    //FixType
-    const FIX_ADD_COUNTRY_INDICATIVE = 'ADD_COUNTRY_INDICATIVE';
-    const FIX_REMOVE_NON_DIGITS = 'REMOVE_NON_DIGITS';
-
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName() : string
     {
         return 'phone_number';
     }
@@ -41,37 +31,50 @@ class PhoneNumber extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules() : array
     {
         return [
-            [['phone_id', 'processed_number', 'validated'], 'required'],
-            [['phone_id','file_id', 'validated_number', 'validated'], 'integer'],
+            [['phone_identifier', 'validated'], 'required'],
+            [['phone_identifier', 'file_id', 'number', 'validated'], 'integer'],
+            [['number'], 'string', 'max' => 100],
             [['created_at'], 'safe'],
-            [['processed_number'], 'string', 'max' => 100],
-            [['fix_type', 'error_type'], 'string', 'max' => 50],
+            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['file_id' => 'id']],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels() : array
     {
         return [
             'id' => 'ID',
-            'phone_id' => 'Phone ID',
+            'phone_identifier' => 'Phone Identifier',
             'file_id' => 'File ID',
-            'processed_number' => 'Processed Number',
-            'validated_number' => 'Phone Number',
-            'fix_type' => 'Fix Type',
-            'error_type' => 'Error Type',
+            'number' => 'Number',
             'validated' => 'Validated',
             'created_at' => 'Created At',
         ];
     }
 
-    public static function validateNumber($phone_id, $phone_number)
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFile() : ActiveQuery
     {
+        return $this->hasOne(File::className(), ['id' => 'file_id']);
+    }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPhoneNumberFixes() : ActiveQuery
+    {
+        return $this->hasMany(PhoneNumberFix::className(), ['phone_id' => 'id']);
+    }
+
+    public static function validateNumber($phone_identifier, $phone_number) : array
+    {
+        return ['aaaaaaaa'];
     }
 }
