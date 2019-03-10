@@ -9,11 +9,10 @@ use yii\db\ActiveRecord;
  * This is the model class for table "phone_number".
  *
  * @property int $id
+ * @property int $phone_id
  * @property int $file_id
  * @property string $processed_number
- * @property string $country_iso
- * @property int $country_indicative
- * @property int $phone_number
+ * @property int $validated_number
  * @property string $fix_type
  * @property string $error_type
  * @property int $validated
@@ -21,6 +20,16 @@ use yii\db\ActiveRecord;
  */
 class PhoneNumber extends ActiveRecord
 {
+
+    //ErrorType
+    const ERROR_INVALID_COUNTRY_INDICATIVE = 'INVALID_COUNTRY_INDICATIVE';
+    const ERROR_LOWER_LENGTH = 'LOWER_LENGTH';
+    const ERROR_HIGHER_LENGTH = 'HIGHER_LENGTH';
+
+    //FixType
+    const FIX_ADD_COUNTRY_INDICATIVE = 'ADD_COUNTRY_INDICATIVE';
+    const FIX_REMOVE_NON_DIGITS = 'REMOVE_NON_DIGITS';
+
     /**
      * {@inheritdoc}
      */
@@ -35,11 +44,10 @@ class PhoneNumber extends ActiveRecord
     public function rules()
     {
         return [
-            [['file_id', 'processed_number', 'validated'], 'required'],
-            [['file_id', 'country_indicative', 'phone_number', 'validated'], 'integer'],
+            [['phone_id', 'processed_number', 'validated'], 'required'],
+            [['phone_id','file_id', 'validated_number', 'validated'], 'integer'],
             [['created_at'], 'safe'],
             [['processed_number'], 'string', 'max' => 100],
-            [['country_iso'], 'string', 'max' => 10],
             [['fix_type', 'error_type'], 'string', 'max' => 50],
         ];
     }
@@ -51,15 +59,19 @@ class PhoneNumber extends ActiveRecord
     {
         return [
             'id' => 'ID',
+            'phone_id' => 'Phone ID',
             'file_id' => 'File ID',
             'processed_number' => 'Processed Number',
-            'country_iso' => 'Country Iso',
-            'country_indicative' => 'Country Indicative',
-            'phone_number' => 'Phone Number',
+            'validated_number' => 'Phone Number',
             'fix_type' => 'Fix Type',
             'error_type' => 'Error Type',
             'validated' => 'Validated',
             'created_at' => 'Created At',
         ];
+    }
+
+    public static function validateNumber($phone_id, $phone_number)
+    {
+
     }
 }
