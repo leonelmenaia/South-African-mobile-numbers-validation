@@ -11,6 +11,7 @@ services:
       - php
   php:
     image: php:7.3.3-fpm
+    env_file: .env
     volumes:
       - ./:/app:delegated
   db:

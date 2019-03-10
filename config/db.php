@@ -1,4 +1,5 @@
 <?php
+echo MYSQL_HOST;die;
 
 return [
     'class' => 'yii\db\Connection',
