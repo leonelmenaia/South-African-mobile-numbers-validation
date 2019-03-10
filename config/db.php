@@ -1,5 +1,7 @@
 <?php
 
+require_once('load_env.php');
+
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DATABASE,
