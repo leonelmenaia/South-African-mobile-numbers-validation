@@ -2,7 +2,6 @@
 
 namespace tests\unit\models;
 
-use app\models\PhoneNumber;
 use app\models\PhoneNumberFix;
 use Codeception\Test\Unit;
 
@@ -18,13 +17,22 @@ class PhoneNumberFixTest extends Unit
         $this->assertEquals('27831234567', $result);
     }
 
-    public function testAddCountryIndicative()
+    public function testAddCountryIndicativeToValidNumber()
     {
         $phone_number = '831234567';
 
         $result = PhoneNumberFix::addCountryIndicative($phone_number);
 
         $this->assertEquals('27831234567', $result);
+    }
+
+    public function testAddCountryIndicativeToInvalidNumber()
+    {
+        $phone_number = 'dsadasjfaksdadadjkj 831234 ejqkwkqkeqeqwjk 567 eqwejqkqqeqkjeqlk';
+
+        $result = PhoneNumberFix::addCountryIndicative($phone_number);
+
+        $this->assertEquals('dsadasjfaksdadadjkj 831234 ejqkwkqkeqeqwjk 567 eqwejqkqqeqkjeqlk', $result);
     }
 
 }

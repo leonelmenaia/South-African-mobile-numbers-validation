@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\common\controllers\BaseController;
+use app\models\PhoneNumber;
 
 class PhoneController extends BaseController
 {
@@ -33,7 +34,8 @@ class PhoneController extends BaseController
         return $this->response->success();
     }
 
-    public function actionValidateFile(){
+    public function actionValidateFile()
+    {
         return $this->response->success();
     }
 }

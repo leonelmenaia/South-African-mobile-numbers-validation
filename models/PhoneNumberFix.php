@@ -24,10 +24,8 @@ class PhoneNumberFix extends ActiveRecord
      */
     public static function tableName() : string
     {
-        return 'phone_number_fix';
+        return 'db.phone_number_fix';
     }
-
-
 
     /**
      * {@inheritdoc}
@@ -67,13 +65,21 @@ class PhoneNumberFix extends ActiveRecord
         return $this->hasOne(PhoneNumber::className(), ['id' => 'phone_id']);
     }
 
-    public static function removeNonDigits($phone_number): string
+    public static function fixNumber($phone_number){
+
+    }
+
+    public static function removeNonDigits(string $phone_number): string
     {
         return preg_replace("/[^0-9]/", "", $phone_number );
     }
 
-    public static function addCountryIndicative($phone_number)
+    public static function addCountryIndicative(string $phone_number) : string
     {
+        if(strlen($phone_number) === 9){
+            $phone_number = PhoneNumber::SOUTH_AFRICA_COUNTRY_INDICATIVE . $phone_number;
+        }
 
+        return $phone_number;
     }
 }

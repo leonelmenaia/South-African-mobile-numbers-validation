@@ -41,7 +41,7 @@ class PhoneNumberTest extends Unit
 
     public function testValidateCorrectNumberWithNonDigits()
     {
-        $phone_id = '1';
+        $phone_id = 1;
         $phone_number = '278ahsadhjahjkhjk31  2345  67shjadajksdjkh';
 
         $result = PhoneNumber::validateNumber($phone_id, $phone_number);

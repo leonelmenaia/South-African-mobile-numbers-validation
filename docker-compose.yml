@@ -2,6 +2,7 @@ version: '2'
 services:
   app:
     image: nginx:1.14.2
+    env_file: .env
     ports:
       - 8080:80
     volumes:

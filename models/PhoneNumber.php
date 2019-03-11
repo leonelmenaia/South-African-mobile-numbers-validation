@@ -12,7 +12,7 @@ use yii\db\ActiveRecord;
  * @property int $phone_identifier
  * @property int $file_id
  * @property int $number
- * @property int $validated
+ * @property boolean $validated
  * @property string $created_at
  *
  * @property File $file
@@ -20,12 +20,15 @@ use yii\db\ActiveRecord;
  */
 class PhoneNumber extends ActiveRecord
 {
+
+    const SOUTH_AFRICA_COUNTRY_INDICATIVE = 27;
+
     /**
      * {@inheritdoc}
      */
     public static function tableName() : string
     {
-        return 'phone_number';
+        return 'db.phone_number';
     }
 
     /**
@@ -35,7 +38,8 @@ class PhoneNumber extends ActiveRecord
     {
         return [
             [['phone_identifier', 'validated'], 'required'],
-            [['phone_identifier', 'file_id', 'number', 'validated'], 'integer'],
+            [['phone_identifier', 'file_id', 'number'], 'integer'],
+            [['validated'], 'boolean'],
             [['number'], 'string', 'max' => 100],
             [['created_at'], 'safe'],
             [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['file_id' => 'id']],
@@ -73,7 +77,7 @@ class PhoneNumber extends ActiveRecord
         return $this->hasMany(PhoneNumberFix::className(), ['phone_id' => 'id']);
     }
 
-    public static function validateNumber($phone_identifier, $phone_number) : array
+    public static function validateNumber(int $phone_identifier, string $phone_number) : array
     {
         return ['aaaaaaaa'];
     }
