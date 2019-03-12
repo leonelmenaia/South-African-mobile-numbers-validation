@@ -26,7 +26,7 @@ class PhoneController extends BaseController
 
     public function actionValidate()
     {
-        return $this->response->success();
+        return $this->response->success(PhoneNumber::validateNumber('1','27831234567'));
     }
 
     public function actionDetails()

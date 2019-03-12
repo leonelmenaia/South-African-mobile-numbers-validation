@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\common\exceptions\SaveModelException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -9,7 +10,7 @@ use yii\db\ActiveRecord;
  * This is the model class for table "phone_number".
  *
  * @property int $id
- * @property int $phone_identifier
+ * @property int $identifier
  * @property int $file_id
  * @property int $number
  * @property boolean $validated
@@ -21,12 +22,12 @@ use yii\db\ActiveRecord;
 class PhoneNumber extends ActiveRecord
 {
 
-    const SOUTH_AFRICA_COUNTRY_INDICATIVE = 27;
+    const SOUTH_AFRICA_COUNTRY_INDICATIVE = '27';
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName() : string
+    public static function tableName(): string
     {
         return 'db.phone_number';
     }
@@ -34,11 +35,11 @@ class PhoneNumber extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [
-            [['phone_identifier', 'validated'], 'required'],
-            [['phone_identifier', 'file_id', 'number'], 'integer'],
+            [['identifier', 'validated'], 'required'],
+            [['identifier', 'file_id', 'number'], 'integer'],
             [['validated'], 'boolean'],
             [['number'], 'string', 'max' => 100],
             [['created_at'], 'safe'],
@@ -49,11 +50,11 @@ class PhoneNumber extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels() : array
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
-            'phone_identifier' => 'Phone Identifier',
+            'identifier' => 'Phone Identifier',
             'file_id' => 'File ID',
             'number' => 'Number',
             'validated' => 'Validated',
@@ -64,7 +65,7 @@ class PhoneNumber extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFile() : ActiveQuery
+    public function getFile(): ActiveQuery
     {
         return $this->hasOne(File::className(), ['id' => 'file_id']);
     }
@@ -72,13 +73,50 @@ class PhoneNumber extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPhoneNumberFixes() : ActiveQuery
+    public function getPhoneNumberFixes(): ActiveQuery
     {
         return $this->hasMany(PhoneNumberFix::className(), ['phone_id' => 'id']);
     }
 
-    public static function validateNumber(int $phone_identifier, string $phone_number) : array
+    public static function validateNumber(string $number,
+                                          int $identifier = null,
+                                          int $file_id = null): array
     {
-        return ['aaaaaaaa'];
+        $validated = false;
+
+        $model = new PhoneNumber();
+        $model->identifier = $identifier;
+        $model->file_id = $file_id;
+        $model->number = $number;
+        $model->validated = $validated;
+
+        if (!$model->save()) {
+            throw new SaveModelException($model->errors);
+        }
+
+        if (self::isNumberValid($number)) {
+            $validated = true;
+        }
+
+        if (!$validated) {
+            $number = PhoneNumberFix::fixNumber($number, $model->id);
+        }
+
+        $result = [
+            'identifier' => $model->identifier,
+            'file_id' => $model->file_id,
+            'number' => $model->number,
+            'validated' => $model->validated,
+        ];
+
+
+        return $result;
+    }
+
+    public static function isNumberValid($number)
+    {
+        return ctype_digit($number) &&
+            strlen($number) === 11 &&
+            substr($number, 0, 2) === self::SOUTH_AFRICA_COUNTRY_INDICATIVE;
     }
 }
