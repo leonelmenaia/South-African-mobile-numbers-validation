@@ -6,12 +6,21 @@ use Yii;
 
 class ResponseFactory
 {
+    /**
+     * @param array | object $data
+     * @param string $type
+     * @param string $message
+     * @param int $http_status
+     * @return array
+     */
     public function success(array $data = [],
-                            string $type = 'no_type_provided',
+                            string $type = 'NO_TYPE_PROVIDED',
                             string $message = 'No message provided.',
                             int $http_status = HttpStatus::HTTP_OK
     )
     {
+
+
 
         Yii::$app->getResponse()->setStatusCode($http_status);
 
@@ -23,7 +32,7 @@ class ResponseFactory
     }
 
     public function false(array $data = [],
-                          string $type = 'no_type_provided',
+                          string $type = 'NO_TYPE_PROVIDED',
                           string $message = 'No message provided.',
                           int $http_status = HttpStatus::HTTP_BAD_REQUEST)
     {

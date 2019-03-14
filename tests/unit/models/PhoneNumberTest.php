@@ -5,9 +5,16 @@ namespace tests\unit\models;
 
 use app\models\PhoneNumber;
 use Codeception\Test\Unit;
+use InvalidArgumentException;
 
 class PhoneNumberTest extends Unit
 {
+
+    public function testValidateEmptyNumber(){
+        $this->expectException(InvalidArgumentException::class);
+        $result = PhoneNumber::validateNumber('');
+
+    }
 
     public function testValidateCorrectNumber()
     {
@@ -15,14 +22,15 @@ class PhoneNumberTest extends Unit
 
         $result = PhoneNumber::validateNumber($phone_number);
 
-        $expected = [
-            'identifier' => null,
-            'file_id' => null,
-            'number' => '27831234567',
-            'validated' => true,
-        ];
+        $expected = new PhoneNumber();
+        $expected->id = $result->id;
+        $expected->identifier = null;
+        $expected->file_id = null;
+        $expected->number = '27831234567';
+        $expected->validated = true;
+        $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($result->getAttributes(), $expected->getAttributes());
     }
 
     public function testValidateCorrectNumberWithNoCountryIndicative()
@@ -31,14 +39,15 @@ class PhoneNumberTest extends Unit
 
         $result = PhoneNumber::validateNumber($phone_number);
 
-        $expected = [
-            'identifier' => null,
-            'file_id' => null,
-            'number' => '27831234567',
-            'validated' => true,
-        ];
+        $expected = new PhoneNumber();
+        $expected->id = $result->id;
+        $expected->identifier = null;
+        $expected->file_id = null;
+        $expected->number = '27831234567';
+        $expected->validated = true;
+        $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($result->attributes, $expected->attributes);
     }
 
     public function testValidateCorrectNumberWithNonDigits()
@@ -47,14 +56,15 @@ class PhoneNumberTest extends Unit
 
         $result = PhoneNumber::validateNumber($phone_number);
 
-        $expected = [
-            'identifier' => null,
-            'file_id' => null,
-            'number' => '27831234567',
-            'validated' => true,
-        ];
+        $expected = new PhoneNumber();
+        $expected->id = $result->id;
+        $expected->identifier = null;
+        $expected->file_id = null;
+        $expected->number = '27831234567';
+        $expected->validated = true;
+        $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($result->attributes, $expected->attributes);
     }
 
     public function testValidateCorrectNumberWithNonDigitsAndNoCountryIndicative()
@@ -63,14 +73,15 @@ class PhoneNumberTest extends Unit
 
         $result = PhoneNumber::validateNumber($phone_number);
 
-        $expected = [
-            'identifier' => null,
-            'file_id' => null,
-            'number' => '27831234567',
-            'validated' => true,
-        ];
+        $expected = new PhoneNumber();
+        $expected->id = $result->id;
+        $expected->identifier = null;
+        $expected->file_id = null;
+        $expected->number = '27831234567';
+        $expected->validated = true;
+        $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($result->attributes, $expected->attributes);
     }
 
 }

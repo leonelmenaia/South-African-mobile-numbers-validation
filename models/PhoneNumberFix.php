@@ -3,8 +3,11 @@
 namespace app\models;
 
 use app\common\exceptions\SaveModelException;
+use app\common\utils\TimeUtils;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 
 /**
  * This is the model class for table "phone_number_fix".
@@ -27,7 +30,7 @@ class PhoneNumberFix extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName() : string
+    public static function tableName(): string
     {
         return 'db.phone_number_fix';
     }
@@ -35,7 +38,7 @@ class PhoneNumberFix extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [
             [['phone_id', 'fix_type', 'number_before', 'number_after'], 'required'],
@@ -50,7 +53,7 @@ class PhoneNumberFix extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels() : array
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -62,73 +65,101 @@ class PhoneNumberFix extends ActiveRecord
         ];
     }
 
+    public function beforeSave($insert) : bool
+    {
+
+        if ($insert) {
+            $this->created_at = TimeUtils::now();
+        }
+
+        return parent::beforeSave($insert);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPhone() : ActiveQuery
+    public function getPhone(): ActiveQuery
     {
         return $this->hasOne(PhoneNumber::className(), ['id' => 'phone_id']);
     }
 
-    public static function fixNumber(string $number, int $phone_id){
-
-        if(PhoneNumber::isNumberValid($number)){
-            return true;
-        }
-
-        $number = self::removeNonDigits($number, $phone_id);
-
-        if(PhoneNumber::isNumberValid($number)){
-            return true;
-        }
-
-        $number = self::addCountryIndicative($number, $phone_id);
-
-        if(PhoneNumber::isNumberValid($number)){
-            return true;
-        }
-
-        return false;
-
-    }
-
-    public static function removeNonDigits(string $phone_number, int $phone_id = null): string
+    /**
+     * @param string $number
+     * @param int|null $phone_id
+     * @return string
+     * @throws SaveModelException
+     */
+    public static function fixNumber(string $number, int $phone_id = null): string
     {
-        $phone_number_fixed = preg_replace("/[^0-9]/", "", $phone_number );
 
-        if($phone_id != null){
+        if (PhoneNumber::isNumberValid($number)) {
+            return null;
+        }
+
+        $transaction = Yii::$app->getDb()->beginTransaction();
+
+        $new_number = self::removeNonDigits($number);
+
+        if (!empty($phone_id) && $number !== $new_number) {
             $model = new PhoneNumberFix();
             $model->phone_id = $phone_id;
+            $model->number_before = $number;
+            $model->number_after = $number = $new_number;
             $model->fix_type = self::FIX_TYPE_REMOVE_NON_DIGITS;
-            $model->number_before = $phone_number;
-            $model->number_after = $phone_number_fixed;
 
-            if($model->save()){
-                throw new SaveModelException($model->errors);
+            if (!$model->save()) {
+                throw new SaveModelException($model->getErrors());
             }
         }
 
-        return $phone_number_fixed;
+        if (PhoneNumber::isNumberValid($number)) {
+            $transaction->commit();
+            return $number;
+        }
+
+        $new_number = self::addCountryIndicative($number);
+
+        if (!empty($phone_id) && $number !== $new_number) {
+            $model = new PhoneNumberFix();
+            $model->phone_id = $phone_id;
+            $model->number_before = $number;
+            $model->number_after = $number = $new_number;
+            $model->fix_type = self::FIX_TYPE_ADD_COUNTRY_INDICATIVE;
+
+            if (!$model->save()) {
+                throw new SaveModelException($model->getErrors());
+            }
+        }
+
+        if (PhoneNumber::isNumberValid($number)) {
+            $transaction->commit();
+            return $number;
+
+        }
+
+        //no need to save fixes if the number was incorrect
+        $transaction->rollBack();
+
+        return null;
+
     }
 
-    public static function addCountryIndicative(string $phone_number, int $phone_id = null) : string
+    public static function removeNonDigits(string $phone_number): string
     {
-        $phone_number_fixed = $phone_number;
 
-        if(strlen($phone_number) === 9){
+        if(ctype_digit($phone_number)){
+            return $phone_number;
+        }
+
+        return preg_replace("/[^0-9]/", "", $phone_number);
+
+    }
+
+    public static function addCountryIndicative(string $phone_number): string
+    {
+
+        if (strlen($phone_number) === 9) {
             $phone_number = PhoneNumber::SOUTH_AFRICA_COUNTRY_INDICATIVE . $phone_number;
-        }
-
-        if($phone_id != null){
-            $model = new PhoneNumberFix();
-            $model->phone_id = $phone_id;
-            $model->fix_type = self::FIX_TYPE_REMOVE_NON_DIGITS;
-            $model->number_before = $phone_number;
-            $model->number_after = $phone_number_fixed;
-
-            if($model->save()){
-                throw new SaveModelException($model->errors);
-            }
         }
 
         return $phone_number;

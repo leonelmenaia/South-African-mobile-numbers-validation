@@ -17,7 +17,6 @@ class SaveModelException extends Exception
             break;
         }
 
-        // make sure everything is assigned properly
         parent::__construct($message, $code, $previous);
     }
 

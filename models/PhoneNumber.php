@@ -3,6 +3,10 @@
 namespace app\models;
 
 use app\common\exceptions\SaveModelException;
+use app\common\utils\TimeUtils;
+use Exception;
+use InvalidArgumentException;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -38,8 +42,8 @@ class PhoneNumber extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['identifier', 'validated'], 'required'],
-            [['identifier', 'file_id', 'number'], 'integer'],
+            [['number', 'validated'], 'required'],
+            [['identifier', 'file_id'], 'integer'],
             [['validated'], 'boolean'],
             [['number'], 'string', 'max' => 100],
             [['created_at'], 'safe'],
@@ -62,6 +66,16 @@ class PhoneNumber extends ActiveRecord
         ];
     }
 
+    public function beforeSave($insert) : bool
+    {
+
+        if ($insert) {
+            $this->created_at = TimeUtils::now();
+        }
+
+        return parent::beforeSave($insert);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -78,42 +92,69 @@ class PhoneNumber extends ActiveRecord
         return $this->hasMany(PhoneNumberFix::className(), ['phone_id' => 'id']);
     }
 
-    public static function validateNumber(string $number,
+    public static function  validateNumber(string $number,
                                           int $identifier = null,
-                                          int $file_id = null): array
+                                          int $file_id = null): PhoneNumber
     {
-        $validated = false;
 
-        $model = new PhoneNumber();
-        $model->identifier = $identifier;
-        $model->file_id = $file_id;
-        $model->number = $number;
-        $model->validated = $validated;
-
-        if (!$model->save()) {
-            throw new SaveModelException($model->errors);
+        if(empty($number)){
+            throw new InvalidArgumentException();
         }
 
-        if (self::isNumberValid($number)) {
-            $validated = true;
+        $transaction = Yii::$app->getDb()->beginTransaction();
+
+        try {
+
+            $model = new PhoneNumber();
+            $model->identifier = $identifier;
+            $model->file_id = $file_id;
+            $model->number = $number;
+            $model->validated = false;
+
+            if (!$model->save()) {
+                throw new SaveModelException($model->getErrors());
+            }
+
+            //if number is already validated update model and return
+            if (self::isNumberValid($number)) {
+
+                $model->validated = true;
+
+                if(!$model->save()){
+                    throw new SaveModelException($model->getErrors());
+                }
+
+                $transaction->commit();
+
+                return $model;
+            }
+
+            $new_number = PhoneNumberFix::fixNumber($number, $model->id);
+
+            //if it was not possible to fix the number return the number as not validated
+            if (empty($new_number)) {
+                $transaction->commit();
+                return $model;
+            }
+
+            //save new number as validated
+            $model->number = $new_number;
+            $model->validated = true;
+
+            if(!$model->save()){
+                throw new SaveModelException($model->getErrors());
+            }
+
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            throw $e;
         }
 
-        if (!$validated) {
-            $number = PhoneNumberFix::fixNumber($number, $model->id);
-        }
-
-        $result = [
-            'identifier' => $model->identifier,
-            'file_id' => $model->file_id,
-            'number' => $model->number,
-            'validated' => $model->validated,
-        ];
-
-
-        return $result;
+        $transaction->commit();
+        return $model;
     }
 
-    public static function isNumberValid($number)
+    public static function isNumberValid(string $number)
     {
         return ctype_digit($number) &&
             strlen($number) === 11 &&
