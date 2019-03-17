@@ -15,6 +15,7 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'wp1TCepyhg7qBXiQYA5Wcba2zo2FUAla',
+            'enableCsrfValidation' => false,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -47,7 +48,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-            ],
+                'GET file/<id:\d+>' => 'file/details',
+                'POST file' => 'file/validate',
+                'POST phone' => 'phone/validate',
+            ]
         ],
         'response' => [
             'format' => yii\web\Response::FORMAT_JSON,

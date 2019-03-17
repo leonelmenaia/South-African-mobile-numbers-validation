@@ -3,8 +3,11 @@
 namespace app\controllers;
 
 use app\common\controllers\BaseController;
+use app\common\exceptions\ActiveRecordNotFoundException;
+use app\models\File;
 use app\models\PhoneNumber;
 use Yii;
+use yii\web\UploadedFile;
 
 class PhoneController extends BaseController
 {
@@ -41,15 +44,5 @@ class PhoneController extends BaseController
         $result['fixes'] = $phone_number_fix;
 
         return $this->response->success($result);
-    }
-
-    public function actionDetails()
-    {
-        return $this->response->success();
-    }
-
-    public function actionValidateFile()
-    {
-        return $this->response->success();
     }
 }

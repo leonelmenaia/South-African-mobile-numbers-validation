@@ -89,7 +89,7 @@ class PhoneNumberFix extends ActiveRecord
      * @return string
      * @throws SaveModelException
      */
-    public static function fixNumber(string $number, int $phone_id = null): string
+    public static function fixNumber(string $number, int $phone_id = null): ?string
     {
 
         if (PhoneNumber::isNumberValid($number)) {
@@ -100,6 +100,7 @@ class PhoneNumberFix extends ActiveRecord
 
         $new_number = self::removeNonDigits($number);
 
+        //if there was changes from the fix
         if (!empty($phone_id) && $number !== $new_number) {
             $model = new PhoneNumberFix();
             $model->phone_id = $phone_id;
@@ -107,6 +108,7 @@ class PhoneNumberFix extends ActiveRecord
             $model->number_after = $number = $new_number;
             $model->fix_type = self::FIX_TYPE_REMOVE_NON_DIGITS;
 
+            //TODO nao ta a gravar este for some reason
             if (!$model->save()) {
                 throw new SaveModelException($model->getErrors());
             }
@@ -119,6 +121,7 @@ class PhoneNumberFix extends ActiveRecord
 
         $new_number = self::addCountryIndicative($number);
 
+        //if there was changes from the fix
         if (!empty($phone_id) && $number !== $new_number) {
             $model = new PhoneNumberFix();
             $model->phone_id = $phone_id;
