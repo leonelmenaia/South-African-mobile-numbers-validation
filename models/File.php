@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\common\exceptions\SaveModelException;
+use app\common\utils\Utils;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
@@ -97,7 +98,7 @@ class File extends ActiveRecord
         return $model;
     }
 
-    public static function getStatsById(int $id)
+    public static function getStats(int $id)
     {
 
         $file = File::findOne(['id' => $id]);
@@ -157,6 +158,40 @@ class File extends ActiveRecord
                 'percentage_invalidated' => $percentage_invalidated
             ]
         ];
+
+    }
+
+    public static function getDownloadLink(int $id){
+
+        $file = File::findOne(['id' => $id]);
+
+        if (empty($file)) {
+            throw new ActiveRecordNotFoundException(File::class, $id);
+        }
+
+        $phone_numbers = $file->getPhoneNumbers()->all();
+
+        /** @var PhoneNumber $phone_number */
+        foreach($phone_numbers as &$phone_number){
+            $phone_number_fixes = $phone_number->getPhoneNumberFixes()->asArray()->all();
+
+            $phone_number = $phone_number->toArray();
+            $phone_number['fixes'] = $phone_number_fixes;
+        }
+
+        $file_name = 'files/phone_numbers_' . md5($file->id) . '.json';
+
+        if(file_exists($file_name)){
+            return Utils::getBaseUrl() . '/' . $file_name;
+        }
+
+        $fp = fopen($file_name, 'w');
+
+        fwrite($fp,json_encode($phone_numbers));
+
+        fclose($fp);
+
+        return Utils::getBaseUrl() . '/' . $file_name;
 
     }
 }

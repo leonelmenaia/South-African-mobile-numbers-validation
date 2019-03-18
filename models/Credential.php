@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use app\common\exceptions\NotImplementedException;
+use app\common\exceptions\SaveModelException;
+use Exception;
 use Yii;
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\common\utils\TimeUtils;
@@ -17,14 +20,12 @@ use yii\web\UnauthorizedHttpException;
  * @property int $id
  * @property string $username
  * @property string $password
+ * @property int $allowance
+ * @property int $allowance_updated_at
  * @property string $created_at
  */
 class Credential extends ActiveRecord implements IdentityInterface, RateLimitInterface
 {
-
-    public $rateLimit = 1;
-    public $allowance;
-    public $allowance_updated_at;
 
     /**
      * {@inheritdoc}
@@ -42,6 +43,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
         return [
             [['username', 'password'], 'required'],
             [['username', 'password'], 'string'],
+            [['allowance', 'allowance_updated_at'], 'integer'],
             [['created_at'], 'safe'],
         ];
     }
@@ -55,7 +57,9 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
             'id' => 'ID',
             'username' => 'Api Key',
             'password' => 'Api Secret',
-            'created_at' => 'Created At',
+            'allowance' => 'Allowance',
+            'allowance_updated_at' => 'Allowance Updated At',
+            'created_at' => 'Created At'
         ];
     }
 
@@ -143,10 +147,15 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
 
         $token = $matches[1] ?? null;
 
-        $jwt = (array) JWT::decode($token, JWT_TOKEN, ['HS256']);
+        try{
+            $jwt = (array) JWT::decode($token, JWT_TOKEN, ['HS256']);
 
-        $sub = $jwt['sub'] ?? null;
-        $exp = $jwt['exp'] ?? null;
+            $sub = $jwt['sub'] ?? null;
+            $exp = $jwt['exp'] ?? null;
+        }
+        catch(Exception $e){
+            throw new UnauthorizedHttpException();
+        }
 
         if(time() > $exp){
             throw new UnauthorizedHttpException();
@@ -189,7 +198,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
      */
     public function getAuthKey()
     {
-        // TODO: Implement getAuthKey() method.
+        throw new NotImplementedException();
     }
 
     /**
@@ -202,7 +211,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
      */
     public function validateAuthKey($authKey)
     {
-        // TODO: Implement validateAuthKey() method.
+        throw new NotImplementedException();
     }
 
     /**
@@ -214,7 +223,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
      */
     public function getRateLimit($request, $action)
     {
-        return [$this->rateLimit, 60];
+        return [10, 1];
     }
 
     /**
@@ -235,11 +244,15 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
      * @param \yii\base\Action $action the action to be executed
      * @param int $allowance the number of allowed requests remaining.
      * @param int $timestamp the current timestamp.
+     * @throws SaveModelException
      */
     public function saveAllowance($request, $action, $allowance, $timestamp)
     {
         $this->allowance = $allowance;
         $this->allowance_updated_at = $timestamp;
-        $this->save();
+
+        if(!$this->save()){
+            throw new SaveModelException($this->getErrors());
+        }
     }
 }

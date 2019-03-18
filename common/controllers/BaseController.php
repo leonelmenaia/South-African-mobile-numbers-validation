@@ -21,9 +21,6 @@ use yii\web\UnauthorizedHttpException;
 class BaseController extends Controller
 {
 
-    /** @var User $identity */
-    private $identity;
-
     /** @var ResponseFactory $response */
     protected $response;
 
@@ -41,6 +38,15 @@ class BaseController extends Controller
         if($this->requiresAuth()){
             $this->authenticate();
         }
+    }
+
+    public function behaviors() {
+        return [
+            'rateLimiter' => [
+                'class' => 'yii\filters\RateLimiter',
+                'enableRateLimitHeaders' => false
+            ]
+        ];
     }
 
     private function requiresAuth()

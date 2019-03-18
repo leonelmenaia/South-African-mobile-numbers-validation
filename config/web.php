@@ -22,7 +22,7 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\Credential',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -48,7 +48,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'POST auth' => 'credential/auth',
+                'GET auth' => 'credential/auth',
                 'GET file/<id:\d+>' => 'file/details',
                 'POST file' => 'file/validate',
                 'POST phone' => 'phone-number/validate',

@@ -12,33 +12,18 @@ use yii\web\UploadedFile;
 class PhoneNumberController extends BaseController
 {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
-        ];
-    }
-
     public function actionValidate()
     {
 
-        $phone_number = Yii::$app->getRequest()->post('phone_number');
+        $number = Yii::$app->getRequest()->post('number');
+        $identifier = Yii::$app->getRequest()->post('identifier');
 
-        if(empty($phone_number)){
+        if(empty($number)){
             return $this->response->falseMissingParams();
         }
 
-        $phone_number = PhoneNumber::validateNumber($phone_number);
-        $phone_number_fix = $phone_number->phoneNumberFixes;
+        $phone_number = PhoneNumber::validateNumber($number, $identifier);
+        $phone_number_fix = $phone_number->getPhoneNumberFixes()->asArray()->all();
 
         $result = $phone_number->toArray();
         $result['fixes'] = $phone_number_fix;

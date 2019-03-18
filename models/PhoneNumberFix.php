@@ -46,7 +46,7 @@ class PhoneNumberFix extends ActiveRecord
             [['created_at'], 'safe'],
             [['fix_type'], 'string', 'max' => 50],
             [['number_before', 'number_after'], 'string', 'max' => 100],
-            [['phone_id'], 'exist', 'skipOnError' => true, 'targetClass' => PhoneNumber::className(), 'targetAttribute' => ['phone_id' => 'id']],
+            [['phone_id'], 'exist', 'skipOnError' => true, 'targetClass' => PhoneNumber::class, 'targetAttribute' => ['phone_id' => 'id']],
         ];
     }
 
