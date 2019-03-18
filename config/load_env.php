@@ -14,7 +14,9 @@ $required_envs = [
     'MYSQL_DATABASE',
     'MYSQL_USER',
     'MYSQL_PASSWORD',
-    'MYSQL_ROOT_PASSWORD'
+    'MYSQL_ROOT_PASSWORD',
+    'PMA_HOST',
+    'JWT_TOKEN'
 ];
 
 foreach ($required_envs as $env) {

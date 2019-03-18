@@ -30,7 +30,7 @@ class FileController extends BaseController
 
     public function actionDetails()
     {
-        $id = Yii::$app->getRequest()->get('id');
+        $id = Yii::$app->getRequest()->get('id') ?? null;
 
         if(empty($id)){
             return $this->response->falseMissingParams();
@@ -51,7 +51,7 @@ class FileController extends BaseController
 
     public function actionValidate()
     {
-        $file = UploadedFile::getInstanceByName("file");
+        $file = UploadedFile::getInstanceByName("file") ?? null;
 
         if(empty($file)){
             return $this->response->falseMissingParams();

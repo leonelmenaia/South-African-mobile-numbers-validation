@@ -9,7 +9,7 @@ use app\models\PhoneNumber;
 use Yii;
 use yii\web\UploadedFile;
 
-class PhoneController extends BaseController
+class PhoneNumberController extends BaseController
 {
 
     /**

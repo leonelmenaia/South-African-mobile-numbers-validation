@@ -24,7 +24,7 @@ class File extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return 'db.file';
+        return 'file';
     }
 
     /**

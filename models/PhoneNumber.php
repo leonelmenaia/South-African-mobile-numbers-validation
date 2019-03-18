@@ -33,7 +33,7 @@ class PhoneNumber extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return 'db.phone_number';
+        return 'phone_number';
     }
 
     /**

@@ -32,7 +32,7 @@ class PhoneNumberFix extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return 'db.phone_number_fix';
+        return 'phone_number_fix';
     }
 
     /**
@@ -108,7 +108,6 @@ class PhoneNumberFix extends ActiveRecord
             $model->number_after = $number = $new_number;
             $model->fix_type = self::FIX_TYPE_REMOVE_NON_DIGITS;
 
-            //TODO nao ta a gravar este for some reason
             if (!$model->save()) {
                 throw new SaveModelException($model->getErrors());
             }

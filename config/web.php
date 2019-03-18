@@ -21,7 +21,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Credential',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -48,9 +48,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'POST auth' => 'credential/auth',
                 'GET file/<id:\d+>' => 'file/details',
                 'POST file' => 'file/validate',
-                'POST phone' => 'phone/validate',
+                'POST phone' => 'phone-number/validate',
             ]
         ],
         'response' => [

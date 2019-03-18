@@ -1,6 +1,7 @@
 version: '2'
 services:
   app:
+    container_name: app
     image: nginx:1.14.2
     env_file: .env
     ports:
@@ -21,6 +22,7 @@ services:
     volumes:
       - ./:/app:delegated
   database:
+    container_name: database
     image: mariadb:10.3
     env_file: .env
     ports:
@@ -28,6 +30,7 @@ services:
     volumes:
       - ./database:/var/lib/mysql
   phpmyadmin:
+    container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
     env_file: .env
     ports:
