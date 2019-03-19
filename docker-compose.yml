@@ -29,9 +29,12 @@ services:
       - 3306:3306
     volumes:
       - ./database:/var/lib/mysql
+      - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
     env_file: .env
     ports:
       - 8000:80
+    depends_on:
+      - database

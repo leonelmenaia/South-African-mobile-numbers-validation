@@ -15,8 +15,8 @@ class PhoneNumberController extends BaseController
     public function actionValidate()
     {
 
-        $number = Yii::$app->getRequest()->post('number');
-        $identifier = Yii::$app->getRequest()->post('identifier');
+        $number = $this->getBody('number');
+        $identifier = $this->getBody('identifier');
 
         if(empty($number)){
             return $this->response->falseMissingParams();

@@ -13,7 +13,6 @@ use yii\web\UploadedFile;
  * This is the model class for table "File".
  *
  * @property int $id
- * @property string $name
  * @property string $created_at
  *
  * @property PhoneNumber[] $phoneNumbers
@@ -34,9 +33,7 @@ class File extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['name'], 'required'],
             [['created_at'], 'safe'],
-            [['name'], 'string', 'max' => 100],
         ];
     }
 
@@ -47,7 +44,6 @@ class File extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
             'created_at' => 'Created At',
         ];
     }
@@ -60,23 +56,30 @@ class File extends ActiveRecord
         return $this->hasMany(PhoneNumber::className(), ['file_id' => 'id']);
     }
 
-    public static function validateFile(UploadedFile $file): File
+    public static function binaryToArray(string $file){
+        $lines = explode(PHP_EOL, $file);
+        $array = [];
+        foreach ($lines as $line) {
+            $array[] = str_getcsv($line);
+        }
+        return $array;
+    }
+
+    public static function validateFile(array $file): File
     {
 
         $model = new File();
-        $model->name = $file->name;
 
         if (!$model->save()) {
             throw new SaveModelException($model->getErrors());
         }
 
         ini_set('auto_detect_line_endings', TRUE); // Some sort of Excel hack, to not having the file messed up in Win Office 2007
-        $handle = fopen($file->tempName, 'r');
 
-        //ignore csv headers (id, sms_phone)
-        fgetcsv($handle);
+        //remove headers from csv
+        unset($file[0]);
 
-        while (($csv_row = fgetcsv($handle, 0, ',')) !== FALSE) {
+        foreach($file as $row){
 
             $data = [];
 
@@ -85,7 +88,7 @@ class File extends ActiveRecord
                 'number'
             ];
 
-            for ($i = 0; $i < count($csv_row); $i++) {
+            for ($i = 0; $i < count($row); $i++) {
                 if (!empty($fields[$i])) {
                     $field_name = $fields[$i];
                     $data[$field_name] = isset($csv_row[$i]) ? trim($csv_row[$i]) : null;

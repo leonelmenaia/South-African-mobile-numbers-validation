@@ -17,15 +17,27 @@ use yii\web\UnauthorizedHttpException;
  * @package common\controllers
  *
  * @property ResponseFactory $response
+ * @property Credential $credential
+ * @property array $body
+ * @property array $headers
+ * @property array $query
  */
 class BaseController extends Controller
 {
+    /** @var array $body */
+    private $body;
+
+    /** @var array $body */
+    private $headers;
+
+    /** @var array $body */
+    private $query;
 
     /** @var ResponseFactory $response */
-    protected $response;
+    private $response;
 
     /** @var Credential $credential */
-    protected $credential;
+    private $credential;
 
     public function guestActions()
     {
@@ -35,9 +47,14 @@ class BaseController extends Controller
     public function init(){
         $this->response = new ResponseFactory();
 
+        $this->body = json_decode(Yii::$app->getRequest()->getRawBody(), true);
+        $this->headers = Yii::$app->getRequest()->getHeaders();
+        $this->query = Yii::$app->getRequest()->get();
+
         if($this->requiresAuth()){
             $this->authenticate();
         }
+
     }
 
     public function behaviors() {
@@ -76,5 +93,47 @@ class BaseController extends Controller
 
         Yii::$app->user->setIdentity($this->credential);
     }
+
+    /**
+     * @return Credential
+     */
+    public function getCredential(): Credential
+    {
+        return $this->credential;
+    }
+
+    /**
+     * @return ResponseFactory
+     */
+    public function getResponse(): ResponseFactory
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param string $arg
+     * @return null|string
+     */
+    protected function getBody(string $arg): ?string{
+        return $this->body[$arg] ?? null;
+    }
+
+    /**
+     * @param string $arg
+     * @return null|string
+     */
+    protected function getHeaders(string $arg): ?string{
+        return $this->headers[$arg] ?? null;
+    }
+
+    /**
+     * @param string $arg
+     * @return null|string
+     */
+    protected function getQuery(string $arg): ?string{
+        return $this->query[$arg] ?? null;
+    }
+
+
 
 }

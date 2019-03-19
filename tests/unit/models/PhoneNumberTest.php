@@ -13,7 +13,6 @@ class PhoneNumberTest extends Unit
     public function testValidateEmptyNumber(){
         $this->expectException(InvalidArgumentException::class);
         $result = PhoneNumber::validateNumber('');
-
     }
 
     public function testValidateCorrectNumber()
@@ -30,7 +29,7 @@ class PhoneNumberTest extends Unit
         $expected->validated = true;
         $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result->getAttributes(), $expected->getAttributes());
+        $this->assertEquals($expected->getAttributes(), $result->getAttributes());
     }
 
     public function testValidateCorrectNumberWithNoCountryIndicative()
@@ -47,7 +46,7 @@ class PhoneNumberTest extends Unit
         $expected->validated = true;
         $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result->attributes, $expected->attributes);
+        $this->assertEquals($expected->getAttributes(), $result->getAttributes());
     }
 
     public function testValidateCorrectNumberWithNonDigits()
@@ -64,7 +63,7 @@ class PhoneNumberTest extends Unit
         $expected->validated = true;
         $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result->attributes, $expected->attributes);
+        $this->assertEquals($expected->getAttributes(), $result->getAttributes());
     }
 
     public function testValidateCorrectNumberWithNonDigitsAndNoCountryIndicative()
@@ -81,7 +80,7 @@ class PhoneNumberTest extends Unit
         $expected->validated = true;
         $expected->created_at = $result->created_at;
 
-        $this->assertEquals($result->attributes, $expected->attributes);
+        $this->assertEquals($expected->getAttributes(), $result->getAttributes());
     }
 
 }

@@ -13,7 +13,7 @@ class CredentialController extends BaseController
 
     public function actionAuth()
     {
-        $token = Yii::$app->getRequest()->getHeaders()->get('Authorization');
+        $token = $this->getHeaders('Authorization');
 
         if(empty($token)){
             throw new UnauthorizedHttpException();
@@ -23,7 +23,7 @@ class CredentialController extends BaseController
 
         $result = Credential::basicAuth($basic_auth['username'], $basic_auth['password']);
 
-        return $this->response->success($result);
+        return $this->getResponse()->success($result);
     }
 
 

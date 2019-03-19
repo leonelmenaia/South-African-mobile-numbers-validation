@@ -15,39 +15,40 @@ class FileController extends BaseController
     public function actionDetails()
     {
 
-        $id = Yii::$app->getRequest()->get('id') ?? null;
+        $id = $this->getQuery('id');
 
         if(empty($id)){
             return $this->response->falseMissingParams();
         }
 
-        $file = File::findOne(['id' => $id])->toArray();
+        $file = File::findOne(['id' => $id]);
 
         if(empty($file)){
             throw new ActiveRecordNotFoundException(File::class, $id);
         }
 
+        $file = $file->toArray();
         $file['stats'] = File::getStats($file['id']);
         $file['download'] = File::getDownloadLink($file['id']);
 
-        return $this->response->success($file);
+        return $this->getResponse()->success($file);
     }
 
     public function actionValidate()
     {
 
-
-        $file = UploadedFile::getInstanceByName("file") ?? null;
+        $file = file_get_contents('php://input');
 
         if(empty($file)){
             return $this->response->falseMissingParams();
         }
 
+        $file = File::binaryToArray($file);
         $file = File::validateFile($file)->toArray();
         $file['stats'] = File::getStats($file['id']);
         $file['download'] = File::getDownloadLink($file['id']);
 
-        return $this->response->success($file);
+        return $this->getResponse()->success($file);
     }
 
 }
