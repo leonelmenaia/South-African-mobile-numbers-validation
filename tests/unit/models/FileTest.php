@@ -20,6 +20,7 @@ class FileTest extends Unit
         $file['download'] = File::getDownloadLink($file['id']);
 
         $this->assertEquals(null, $file);
+
     }
 
     public function testEmptyFile(){

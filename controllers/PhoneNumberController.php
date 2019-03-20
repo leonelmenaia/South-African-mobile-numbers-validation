@@ -12,6 +12,10 @@ use yii\web\UploadedFile;
 class PhoneNumberController extends BaseController
 {
 
+    /**
+     * Validates a single number and returns the possible fixes.
+     * @return array
+     */
     public function actionValidate()
     {
 

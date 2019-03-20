@@ -84,6 +84,8 @@ class PhoneNumberFix extends ActiveRecord
     }
 
     /**
+     * Tries to fix number. If there is changes save the fix in the database.
+     *
      * @param string $number
      * @param int|null $phone_id
      * @return string
@@ -146,6 +148,12 @@ class PhoneNumberFix extends ActiveRecord
 
     }
 
+    /**
+     * Removes non digits if they exist.
+     *
+     * @param string $phone_number
+     * @return string
+     */
     public static function removeNonDigits(string $phone_number): string
     {
 
@@ -157,6 +165,12 @@ class PhoneNumberFix extends ActiveRecord
 
     }
 
+    /**
+     * Add country indicative only if the number has 9 digits.
+     *
+     * @param string $phone_number
+     * @return string
+     */
     public static function addCountryIndicative(string $phone_number): string
     {
 

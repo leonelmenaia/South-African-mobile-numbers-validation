@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\common\exceptions\ActiveRecordNotFoundException;
 use app\common\exceptions\SaveModelException;
 use app\common\utils\TimeUtils;
 use Exception;
@@ -92,13 +93,31 @@ class PhoneNumber extends ActiveRecord
         return $this->hasMany(PhoneNumberFix::className(), ['phone_id' => 'id']);
     }
 
-    public static function  validateNumber(string $number,
+    /**
+     * Receives a number and validates it. If it's incorrect it tries to fix it.
+     *
+     * @param string $number
+     * @param int|null $identifier phone number identifier presented in the csv
+     * @param int|null $file_id file associated with the number
+     * @return PhoneNumber
+     * @throws ActiveRecordNotFoundException
+     * @throws Exception
+     */
+    public static function validateNumber(string $number,
                                           int $identifier = null,
                                           int $file_id = null): PhoneNumber
     {
 
         if(empty($number)){
             throw new InvalidArgumentException();
+        }
+
+        if(!empty($file_id)){
+            $file = File::findOne(['id' => $file_id]);
+
+            if(empty($file)){
+                throw new ActiveRecordNotFoundException(File::class, $file_id);
+            }
         }
 
         $transaction = Yii::$app->getDb()->beginTransaction();
@@ -154,6 +173,13 @@ class PhoneNumber extends ActiveRecord
         return $model;
     }
 
+    /**
+     * Check if the number is valid. It should only have digits, it should have 11 digits
+     * and start with the country indicative.
+     *
+     * @param string $number
+     * @return bool
+     */
     public static function isNumberValid(string $number)
     {
         return ctype_digit($number) &&

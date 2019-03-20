@@ -11,6 +11,11 @@ use yii\web\UnauthorizedHttpException;
 class CredentialController extends BaseController
 {
 
+    /**
+     * Endpoint to authenticate API client. It receives Basic Auth token and returns jwt token.
+     * @return array
+     * @throws UnauthorizedHttpException
+     */
     public function actionAuth()
     {
         $token = $this->getHeaders('Authorization');

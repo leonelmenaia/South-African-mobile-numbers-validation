@@ -3,6 +3,7 @@
 namespace tests\unit\models;
 
 
+use app\common\exceptions\ActiveRecordNotFoundException;
 use app\models\PhoneNumber;
 use Codeception\Test\Unit;
 use InvalidArgumentException;
@@ -15,15 +16,21 @@ class PhoneNumberTest extends Unit
         $result = PhoneNumber::validateNumber('');
     }
 
-    public function testValidateCorrectNumber()
+    public function testValidateInvalidFileId(){
+        $this->expectException(ActiveRecordNotFoundException::class);
+        $result = PhoneNumber::validateNumber('27831234567',null,999999999);
+    }
+
+    public function testValidateCorrectNumberWithIdentifier()
     {
         $phone_number = '27831234567';
+        $identifier = 9999;
 
-        $result = PhoneNumber::validateNumber($phone_number);
+        $result = PhoneNumber::validateNumber($phone_number,$identifier);
 
         $expected = new PhoneNumber();
         $expected->id = $result->id;
-        $expected->identifier = null;
+        $expected->identifier = $identifier;
         $expected->file_id = null;
         $expected->number = '27831234567';
         $expected->validated = true;
@@ -78,6 +85,40 @@ class PhoneNumberTest extends Unit
         $expected->file_id = null;
         $expected->number = '27831234567';
         $expected->validated = true;
+        $expected->created_at = $result->created_at;
+
+        $this->assertEquals($expected->getAttributes(), $result->getAttributes());
+    }
+
+    public function testValidateIncorrectNumberWithoutFirstIndicativeNumber()
+    {
+        $phone_number = '7831234567';
+
+        $result = PhoneNumber::validateNumber($phone_number);
+
+        $expected = new PhoneNumber();
+        $expected->id = $result->id;
+        $expected->identifier = null;
+        $expected->file_id = null;
+        $expected->number = '7831234567';
+        $expected->validated = false;
+        $expected->created_at = $result->created_at;
+
+        $this->assertEquals($expected->getAttributes(), $result->getAttributes());
+    }
+
+    public function testValidateIncorrectNumberWithInvalidLengthAndNonDigits()
+    {
+        $phone_number = '_DELETED_1234567';
+
+        $result = PhoneNumber::validateNumber($phone_number);
+
+        $expected = new PhoneNumber();
+        $expected->id = $result->id;
+        $expected->identifier = null;
+        $expected->file_id = null;
+        $expected->number = '_DELETED_1234567';
+        $expected->validated = false;
         $expected->created_at = $result->created_at;
 
         $this->assertEquals($expected->getAttributes(), $result->getAttributes());

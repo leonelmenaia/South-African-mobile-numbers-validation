@@ -31,3 +31,9 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
+
+#files to download
+/web/files
+
+#database data
+/docker/database/data

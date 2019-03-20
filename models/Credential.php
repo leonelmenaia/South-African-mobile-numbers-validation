@@ -73,6 +73,12 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
         return parent::beforeSave($insert);
     }
 
+    /**
+     * Receives a Basic Auth token and returns the username and password.
+     * @param $token
+     * @return array
+     * @throws UnauthorizedHttpException
+     */
     public static function getBasicAuth($token){
 
         if (!preg_match('/^Basic\s+(.*?)$/', $token, $matches)) {
@@ -86,6 +92,16 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
         return ['username' => $token_parts[0], 'password' => $token_parts[1]];
     }
 
+    /**
+     * Receives an username and password and matches it with a credential in the database
+     * If it matches it will generate a jwt token with the credential id and expire date.
+     *
+     * @param string $username
+     * @param string $password
+     * @return array
+     * @throws ActiveRecordNotFoundException
+     * @throws UnauthorizedHttpException
+     */
     public static function basicAuth(string $username, string $password): array
     {
 
@@ -99,11 +115,11 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
             throw new UnauthorizedHttpException();
         }
 
+        //token has 1 month validation
         $exp = strtotime('+1 month');
 
         $payload = [
             'sub' => $credential->id,
-            //token has 1 month validation
             'exp' => $exp
         ];
 
@@ -142,7 +158,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
     public static function findIdentityByAccessToken($token, $type = null)
     {
         if (!preg_match('/^Bearer\s+(.*?)$/', $token, $matches)) {
-            throw new UnauthorizedHttpException();
+            throw new UnauthorizedHttpException('Header malformed');
         }
 
         $token = $matches[1] ?? null;
@@ -154,11 +170,11 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
             $exp = $jwt['exp'] ?? null;
         }
         catch(Exception $e){
-            throw new UnauthorizedHttpException();
+            throw new UnauthorizedHttpException('Token malformed');
         }
 
         if(time() > $exp){
-            throw new UnauthorizedHttpException();
+            throw new UnauthorizedHttpException('Token expired');
         }
 
         $credential = Credential::findOne(['id' => $sub]);

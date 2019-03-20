@@ -57,6 +57,11 @@ class BaseController extends Controller
 
     }
 
+    /**
+     * Enables rate limit and disables it in the response headers.
+     *
+     * @return array
+     */
     public function behaviors() {
         return [
             'rateLimiter' => [
@@ -66,6 +71,12 @@ class BaseController extends Controller
         ];
     }
 
+
+    /**
+     * Verifies if it's an endpoint that requires auth.
+     *
+     * @return bool
+     */
     private function requiresAuth()
     {
         $current_route = Yii::$app->requestedRoute ?? null;
@@ -81,6 +92,12 @@ class BaseController extends Controller
         return true;
     }
 
+
+    /**
+     * Validates JWT and find the credential associated in it.
+     *
+     * @throws UnauthorizedHttpException
+     */
     private function authenticate()
     {
         $token = Yii::$app->getRequest()->getHeaders()->get('Authorization') ?? null;

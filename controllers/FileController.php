@@ -12,6 +12,12 @@ use yii\web\UploadedFile;
 class FileController extends BaseController
 {
 
+    /**
+     * Endpoint to get file details by id. It returns the file_id, stats and download link for
+     * the phone numbers validated.
+     * @return array
+     * @throws ActiveRecordNotFoundException
+     */
     public function actionDetails()
     {
 
@@ -34,6 +40,12 @@ class FileController extends BaseController
         return $this->getResponse()->success($file);
     }
 
+    /**
+     * Endpoint that receives a binary file (csv) and validates each phone number.
+     * It returns the file_id, stats and download link for the phone numbers validated.
+     *
+     * @return array
+     */
     public function actionValidate()
     {
 
@@ -43,7 +55,7 @@ class FileController extends BaseController
             return $this->response->falseMissingParams();
         }
 
-        $file = File::binaryToArray($file);
+        $file = File::csvToArray($file);
         $file = File::validateFile($file)->toArray();
         $file['stats'] = File::getStats($file['id']);
         $file['download'] = File::getDownloadLink($file['id']);

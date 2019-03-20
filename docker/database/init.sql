@@ -18,9 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `db`
---
+CREATE DATABASE IF NOT EXISTS `db`;
+CREATE DATABASE IF NOT EXISTS `db_test`;
 
 -- --------------------------------------------------------
 
@@ -52,7 +51,6 @@ INSERT INTO `credential` (`id`, `username`, `password`, `allowance`, `allowance_
 
 CREATE TABLE `file` (
   `id` int(11) UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -165,3 +163,7 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE DATABASE db_test;
+
+mysqldump -u admin -p originaldb | mysql -u backup -p password duplicateddb;
