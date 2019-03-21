@@ -45,3 +45,4 @@ to initiate the following:
 | make build                     |  Run if you changed any of the services initialization scripts. Will rebuild the docker-composer services.                              |
 | make build-clean               |  Run if you changed any of the services initialization scripts. Will ignore cached images and rebuild the docker-composer services.              |
 | make test                      |  Run automated tests.                                                                  |
+| make space                     |  Remove all docker cached images.                                                                |
