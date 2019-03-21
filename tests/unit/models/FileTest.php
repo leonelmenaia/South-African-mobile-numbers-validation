@@ -4,7 +4,7 @@ namespace tests\unit\models;
 
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\common\utils\Utils;
-use app\models\File;
+use app\modules\v1\models\File;
 use yii\base\InvalidArgumentException;
 
 class FileTest extends BaseTest

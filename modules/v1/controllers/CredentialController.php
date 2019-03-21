@@ -1,12 +1,10 @@
 <?php
 
-namespace app\controllers;
-
+namespace app\modules\v1\controllers;
 
 use app\common\controllers\BaseController;
-use app\models\Credential;
+use app\modules\v1\models\Credential;
 use Exception;
-use Yii;
 use yii\web\UnauthorizedHttpException;
 
 class CredentialController extends BaseController

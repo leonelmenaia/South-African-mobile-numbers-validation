@@ -7,11 +7,18 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'modules' => [
+        'v1' => [
+            'basePath' => '@app/modules/v1',
+            'class' => 'modules\v1\Module',
+        ],
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'wp1TCepyhg7qBXiQYA5Wcba2zo2FUAla',

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\modules\v1\models;
 
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\common\exceptions\SaveModelException;

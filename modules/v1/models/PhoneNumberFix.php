@@ -1,13 +1,12 @@
 <?php
 
-namespace app\models;
+namespace app\modules\v1\models;
 
 use app\common\exceptions\SaveModelException;
 use app\common\utils\TimeUtils;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Exception;
 
 /**
  * This is the model class for table "phone_number_fix".

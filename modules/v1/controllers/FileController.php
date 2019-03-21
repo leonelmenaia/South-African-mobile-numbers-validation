@@ -1,16 +1,12 @@
 <?php
 
-namespace app\controllers;
-
+namespace app\modules\v1\controllers;
 
 use app\common\controllers\BaseController;
 use app\common\exceptions\ActiveRecordNotFoundException;
-use app\models\File;
-use Yii;
+use app\modules\v1\models\File;
 use yii\base\InvalidArgumentException;
 use yii\db\Exception;
-use yii\helpers\Url;
-use yii\web\UploadedFile;
 
 class FileController extends BaseController
 {

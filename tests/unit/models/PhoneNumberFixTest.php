@@ -2,7 +2,8 @@
 
 namespace tests\unit\models;
 
-use app\models\PhoneNumberFix;
+
+use app\modules\v1\models\PhoneNumberFix;
 
 class PhoneNumberFixTest extends BaseTest
 {

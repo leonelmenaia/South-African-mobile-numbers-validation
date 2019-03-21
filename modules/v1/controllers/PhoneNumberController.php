@@ -1,15 +1,11 @@
 <?php
 
-namespace app\controllers;
+namespace app\modules\v1\controllers;
 
 use app\common\controllers\BaseController;
-use app\common\exceptions\ActiveRecordNotFoundException;
-use app\models\File;
-use app\models\PhoneNumber;
+use app\modules\v1\models\PhoneNumber;
 use Exception;
-use Yii;
 use yii\base\InvalidArgumentException;
-use yii\web\UploadedFile;
 
 class PhoneNumberController extends BaseController
 {
