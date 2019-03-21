@@ -6,7 +6,9 @@ use app\common\controllers\BaseController;
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\models\File;
 use app\models\PhoneNumber;
+use Exception;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\web\UploadedFile;
 
 class PhoneNumberController extends BaseController
@@ -26,11 +28,17 @@ class PhoneNumberController extends BaseController
             return $this->response->falseMissingParams();
         }
 
-        $phone_number = PhoneNumber::validateNumber($number, $identifier);
-        $phone_number_fix = $phone_number->getPhoneNumberFixes()->asArray()->all();
+        try {
+            $phone_number = PhoneNumber::validateNumber($number, $identifier);
+            $phone_number_fix = $phone_number->getPhoneNumberFixes()->asArray()->all();
 
-        $result = $phone_number->toArray();
-        $result['fixes'] = $phone_number_fix;
+            $result = $phone_number->toArray();
+            $result['fixes'] = $phone_number_fix;
+        } catch(InvalidArgumentException $e){
+            return $this->getResponse()->false(null, 'INVALID_NUMBER');
+        } catch(Exception $e){
+            return $this->getResponse()->falseServerError();
+        }
 
         return $this->response->success($result);
     }

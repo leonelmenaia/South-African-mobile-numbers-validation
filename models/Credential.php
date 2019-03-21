@@ -74,25 +74,6 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
     }
 
     /**
-     * Receives a Basic Auth token and returns the username and password.
-     * @param $token
-     * @return array
-     * @throws UnauthorizedHttpException
-     */
-    public static function getBasicAuth($token){
-
-        if (!preg_match('/^Basic\s+(.*?)$/', $token, $matches)) {
-            throw new UnauthorizedHttpException();
-        }
-
-        $token = explode('Basic ', $token)[1];
-        $token = base64_decode($token);
-        $token_parts = explode(':', $token);
-
-        return ['username' => $token_parts[0], 'password' => $token_parts[1]];
-    }
-
-    /**
      * Receives an username and password and matches it with a credential in the database
      * If it matches it will generate a jwt token with the credential id and expire date.
      *
@@ -102,7 +83,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
      * @throws ActiveRecordNotFoundException
      * @throws UnauthorizedHttpException
      */
-    public static function basicAuth(string $username, string $password): array
+    public static function getJWT(string $username, string $password): array
     {
 
         $credential = Credential::findOne(['username' => $username]);
@@ -112,7 +93,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
         }
 
         if (!Yii::$app->getSecurity()->validatePassword($password, $credential->password)) {
-            throw new UnauthorizedHttpException();
+            throw new UnauthorizedHttpException('Invalid credentials');
         }
 
         //token has 1 month validation

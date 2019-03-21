@@ -50,7 +50,7 @@ class BaseController extends Controller
         $this->body = json_decode(Yii::$app->getRequest()->getRawBody(), true);
         $this->headers = Yii::$app->getRequest()->getHeaders();
         $this->query = Yii::$app->getRequest()->get();
-
+        
         if($this->requiresAuth()){
             $this->authenticate();
         }

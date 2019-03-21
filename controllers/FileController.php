@@ -7,6 +7,8 @@ use app\common\controllers\BaseController;
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\models\File;
 use Yii;
+use yii\base\InvalidArgumentException;
+use yii\db\Exception;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 
@@ -27,15 +29,21 @@ class FileController extends BaseController
             return $this->response->falseMissingParams();
         }
 
-        $file = File::findOne(['id' => $id]);
+        try{
+            $file = File::findOne(['id' => $id]);
 
-        if(empty($file)){
-            throw new ActiveRecordNotFoundException(File::class, $id);
+            if(empty($file)){
+                throw new ActiveRecordNotFoundException(File::class, $id);
+            }
+
+            $file = $file->toArray();
+            $file['stats'] = File::getStats($file['id']);
+            $file['download'] = File::getDownloadLink($file['id']);
+        } catch (ActiveRecordNotFoundException $e){
+            return $this->getResponse()->false(null,'INVALID_ID');
+        } catch( Exception $e){
+            return $this->getResponse()->falseServerError();
         }
-
-        $file = $file->toArray();
-        $file['stats'] = File::getStats($file['id']);
-        $file['download'] = File::getDownloadLink($file['id']);
 
         return $this->getResponse()->success($file);
     }
@@ -55,10 +63,17 @@ class FileController extends BaseController
             return $this->response->falseMissingParams();
         }
 
-        $file = File::csvToArray($file);
-        $file = File::validateFile($file)->toArray();
-        $file['stats'] = File::getStats($file['id']);
-        $file['download'] = File::getDownloadLink($file['id']);
+        try {
+            $file = File::csvToArray($file);
+            $file = File::validateFile($file)->toArray();
+            $file['stats'] = File::getStats($file['id']);
+            $file['download'] = File::getDownloadLink($file['id']);
+        } catch(InvalidArgumentException $e){
+            return $this->getResponse()->false(null, 'INVALID_ARGUMENT',$e->getMessage());
+        } catch( Exception $e){
+            return $this->getResponse()->falseServerError();
+        }
+
 
         return $this->getResponse()->success($file);
     }

@@ -88,8 +88,11 @@ class File extends ActiveRecord
             throw new InvalidArgumentException('Empty file');
         }
 
-        if ($file[0][0] !== 'id' && $file[0][1] !== 'sms_phone') {
-            throw new InvalidArgumentException('Invalid CSV header');
+        $id = $file[0][0] ?? null;
+        $sms_phone = $file[0][1] ?? null;
+
+        if ($id !== 'id' && $sms_phone !== 'sms_phone') {
+            throw new InvalidArgumentException('Malformed CSV');
         }
 
         $transaction = Yii::$app->getDb()->beginTransaction();
