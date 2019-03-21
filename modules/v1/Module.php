@@ -2,12 +2,8 @@
 
 namespace app\modules\v1;
 
-
-use yii\base\Module;
-
-class Campaign extends Module
+class Module extends \yii\base\Module
 {
-
     public $controllerNamespace = 'app\modules\v1\controllers';
 
     public function init()

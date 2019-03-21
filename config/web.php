@@ -9,8 +9,7 @@ $config = [
     'bootstrap' => ['log'],
     'modules' => [
         'v1' => [
-            'basePath' => '@app/modules/v1',
-            'class' => 'modules\v1\Module',
+            'class' => 'app\modules\v1\Module',
         ],
     ],
     'aliases' => [
@@ -55,10 +54,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'GET auth' => 'credential/auth',
-                'GET file/<id:\d+>' => 'file/details',
-                'POST file' => 'file/validate',
-                'POST phone' => 'phone-number/validate',
+                'POST v1/auth' => 'v1/credential/auth',
+                'GET v1/file/<id:\d+>' => 'v1/file/details',
+                'POST v1/file' => 'v1/file/validate',
+                'POST v1/phone' => 'v1/phone-number/validate',
             ]
         ],
         'response' => [

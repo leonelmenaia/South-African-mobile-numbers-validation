@@ -4,10 +4,10 @@ namespace app\modules\v1\models;
 
 use app\common\exceptions\NotImplementedException;
 use app\common\exceptions\SaveModelException;
+use app\common\utils\TimeUtils;
+use app\common\exceptions\ActiveRecordNotFoundException;
 use Exception;
 use Yii;
-use app\common\exceptions\ActiveRecordNotFoundException;
-use app\common\utils\TimeUtils;
 use Firebase\JWT\JWT;
 use yii\db\ActiveRecord;
 use yii\filters\RateLimitInterface;

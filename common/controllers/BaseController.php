@@ -2,12 +2,8 @@
 namespace app\common\controllers;
 
 use app\common\components\Response\ResponseFactory;
-use app\common\exceptions\ActiveRecordNotFoundException;
-use app\models\Credential;
-use app\models\User;
-use Firebase\JWT\JWT;
+use app\modules\v1\models\Credential;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\web\Controller;
 use yii\web\UnauthorizedHttpException;
 
@@ -41,7 +37,7 @@ class BaseController extends Controller
 
     public function guestActions()
     {
-        return ['credential/auth'];
+        return ['v1/credential/auth'];
     }
 
     public function init(){

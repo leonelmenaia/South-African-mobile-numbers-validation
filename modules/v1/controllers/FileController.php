@@ -36,7 +36,7 @@ class FileController extends BaseController
             $file['stats'] = File::getStats($file['id']);
             $file['download'] = File::getDownloadLink($file['id']);
         } catch (ActiveRecordNotFoundException $e){
-            return $this->getResponse()->false(null,'INVALID_ID');
+            return $this->getResponse()->false([],'INVALID_ID');
         } catch( Exception $e){
             return $this->getResponse()->falseServerError();
         }
