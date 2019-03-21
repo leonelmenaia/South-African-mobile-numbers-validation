@@ -6,8 +6,8 @@ use app\common\exceptions\ActiveRecordNotFoundException;
 use app\common\exceptions\SaveModelException;
 use app\common\utils\TimeUtils;
 use Exception;
-use InvalidArgumentException;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 

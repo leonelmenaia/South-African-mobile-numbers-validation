@@ -3,9 +3,8 @@
 namespace tests\unit\models;
 
 use app\models\PhoneNumberFix;
-use Codeception\Test\Unit;
 
-class PhoneNumberFixTest extends Unit
+class PhoneNumberFixTest extends BaseTest
 {
 
     public function testRemoveNonDigits()

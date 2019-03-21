@@ -7,7 +7,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./:/app:delegated
+      - ./:/var/www/html
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     links:
       - database
@@ -20,7 +20,7 @@ services:
       dockerfile: ./docker/php/Dockerfile
     env_file: .env
     volumes:
-      - ./:/app:delegated
+      - ./:/var/www/html
   database:
     container_name: database
     image: mariadb:10.3

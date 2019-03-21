@@ -6,7 +6,7 @@ class Utils
 {
 
     public static function getBaseUrl(){
-        return "http://" . $_SERVER['HTTP_HOST'];
+        return "http://" . $_SERVER['HTTP_HOST'] . '/';
     }
 
 }

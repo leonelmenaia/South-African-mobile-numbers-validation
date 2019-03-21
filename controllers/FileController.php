@@ -7,6 +7,7 @@ use app\common\controllers\BaseController;
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\models\File;
 use Yii;
+use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 class FileController extends BaseController
@@ -20,7 +21,6 @@ class FileController extends BaseController
      */
     public function actionDetails()
     {
-
         $id = $this->getQuery('id');
 
         if(empty($id)){

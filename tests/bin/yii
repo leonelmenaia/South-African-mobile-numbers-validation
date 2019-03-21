@@ -23,7 +23,6 @@ $config = yii\helpers\ArrayHelper::merge(
     ]
 );
 
-
 $application = new yii\console\Application($config);
 $exitCode = $application->run();
 exit($exitCode);

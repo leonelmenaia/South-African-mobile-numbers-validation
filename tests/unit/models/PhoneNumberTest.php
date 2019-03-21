@@ -2,13 +2,11 @@
 
 namespace tests\unit\models;
 
-
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\models\PhoneNumber;
-use Codeception\Test\Unit;
-use InvalidArgumentException;
+use yii\base\InvalidArgumentException;
 
-class PhoneNumberTest extends Unit
+class PhoneNumberTest extends BaseTest
 {
 
     public function testValidateEmptyNumber(){
