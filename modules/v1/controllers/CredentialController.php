@@ -30,7 +30,7 @@ class CredentialController extends BaseController
             return $this->getResponse()->falseAccessDenied();
         }
 
-        return $this->getResponse()->success($result);
+        return $this->getResponse()->success($result, 'AUTH_SUCCESS');
     }
 
 

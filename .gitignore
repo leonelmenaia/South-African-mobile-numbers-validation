@@ -37,3 +37,4 @@ tests/_support/_generated
 
 #database data
 /docker/database/data
+/docker/database_test/data

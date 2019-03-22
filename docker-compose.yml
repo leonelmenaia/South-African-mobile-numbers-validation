@@ -29,6 +29,14 @@ services:
     volumes:
       - ./docker/database/data:/var/lib/mysql
       - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+  #database_test:
+  #  container_name: database_test
+  #  image: mariadb:10.3
+  #  ports:
+  #    - 3307:3307
+  #  volumes:
+  #    - ./docker/database_test/data:/var/lib/mysql
+  #    - ./docker/database_test/init.sql:/docker-entrypoint-initdb.d/init.sql
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin

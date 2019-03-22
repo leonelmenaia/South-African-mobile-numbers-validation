@@ -19,9 +19,23 @@ You need [Docker](https://docker.com) installed first.
 
 The local project is meant to be run through docker-compose to provide a seamless development environment between every developer machine.
 
-### Before running the project
+### Features
 
+I used a MVC framework for PHP. 
 
+I decided to implement the authentication using a Bearer Token. The client uses the Auth endpoint to send a username and password that will match in the database and return the Bearer JWT. After that, the client will need to use the token in the Authorization Header until it expires and the client will need to request a new one.
+
+I decided to implement api version control. The version 1 of the API is available. If needed, it's possible to implement a new version and to keep the first one available until it's safe to disable it.
+
+I implemented Unit tests that test specific features (model functions) of the API, and API tests, that test endpoint calling with correct params.
+
+### Notes
+
+I didn't implement CI/CD so the environment variables are public in the repository. This is not optimal and in a work case, the code would need to pull the variables from somewhere.
+
+I only implemented two ways of fixing phone numbers. Removing non digits and adding the full country indicative. For me, those seem to be the ideal. It doesn't make sense to add a single country indicative number or reversing the number. It would only produce invalid numbers.
+
+I focused on South African numbers and didn't implement other types of numbers.
 ### Running the project
 
 Run
@@ -29,11 +43,11 @@ Run
 `make start`
 
 to initiate the following:
-* NGINX server
-* PHP7
-* Database
+* NGINX server (localhost:8080)
+* PHP7 
+* Database (localhost:3306)
 * Test Database
-* PHPMYAdmin
+* PhpMyAdmin (localhost:8000)
 
 ## Shortcuts
 
