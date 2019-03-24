@@ -9,8 +9,6 @@ You need [Docker](https://docker.com) installed first.
 
 The local project is meant to be run through docker-compose to provide a seamless development environment between every developer machine.
 
-Run
-
 `make start`
 
 to initiate the following:
@@ -19,8 +17,6 @@ to initiate the following:
 * Database (localhost:3306)
 * Database (localhost:3307)
 * PhpMyAdmin (localhost:8000)
-
-Run 
 
 `make test`
 
