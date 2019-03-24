@@ -40,9 +40,6 @@ class FileTest extends BaseTest
         $file_path = 'files/phone_numbers_' . md5($file['id']) . '.json';
         $expected['download'] = Utils::getBaseUrl() . $file_path;
 
-        //remove file since we dont need it anymore
-        unlink($_SERVER['DOCUMENT_ROOT'] . '/' . $file_path);
-
         $this->assertEquals($expected, $file);
 
     }

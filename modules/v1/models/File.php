@@ -254,13 +254,22 @@ class File extends ActiveRecord
             return Utils::getBaseUrl() . $file_path;
         }
 
-        $fp = fopen($file_path_absolute, 'w');
-
-        fwrite($fp, json_encode($phone_numbers));
-
-        fclose($fp);
+        self::createDownloadableFile($file_path, $phone_numbers);
 
         return Utils::getBaseUrl() . $file_path;
 
+    }
+
+    public static function createDownloadableFile(string $file_path, array $data){
+
+        //in tests we don't need to create the file
+        if(YII_ENV_TEST){
+            return;
+        }
+
+        if($fp = fopen($file_path, 'w')){
+            fwrite($fp, json_encode($data));
+            fclose($fp);
+        }
     }
 }
