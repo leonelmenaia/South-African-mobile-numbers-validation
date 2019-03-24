@@ -2,6 +2,9 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/test_db.php';
 
+$_SERVER['HTTP_HOST'] = 'localhost:8080';
+$_SERVER['DOCUMENT_ROOT'] = '/var/www/html/web';
+
 /**
  * Application configuration shared by all test types
  */
@@ -27,13 +30,13 @@ return [
             'basePath' => __DIR__ . '/../web/assets',
         ],
         'urlManager' => [
-            'enablePrettyUrl' => false,
+            'enablePrettyUrl' => true,
             'showScriptName' => true,
             'rules' => [
-                'POST test/v1/auth' => 'v1/credential/auth',
-                'GET test/v1/file/<id:\d+>' => 'v1/file/details',
-                'POST test/v1/file' => 'v1/file/validate',
-                'POST test/v1/phone' => 'v1/phone-number/validate',
+                'POST v1/auth' => 'v1/credential/auth',
+                'GET v1/file/<id:\d+>' => 'v1/file/details',
+                'POST v1/file' => 'v1/file/validate',
+                'POST v1/phone' => 'v1/phone-number/validate',
             ]
         ],
         'user' => [

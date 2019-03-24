@@ -15,6 +15,7 @@ use yii\web\UnauthorizedHttpException;
  * @property ResponseFactory $response
  * @property Credential $credential
  * @property array $body
+ * @property string $rawBody
  * @property array $headers
  * @property array $query
  */
@@ -23,10 +24,13 @@ class BaseController extends Controller
     /** @var array $body */
     private $body;
 
-    /** @var array $body */
+    /** @var string $rawBody */
+    private $rawBody;
+
+    /** @var array $headers */
     private $headers;
 
-    /** @var array $body */
+    /** @var array $query */
     private $query;
 
     /** @var ResponseFactory $response */
@@ -44,6 +48,7 @@ class BaseController extends Controller
         $this->response = new ResponseFactory();
 
         $this->body = json_decode(Yii::$app->getRequest()->getRawBody(), true);
+        $this->rawBody = Yii::$app->getRequest()->getRawBody();
         $this->headers = Yii::$app->getRequest()->getHeaders();
         $this->query = Yii::$app->getRequest()->get();
         
@@ -129,6 +134,13 @@ class BaseController extends Controller
      */
     protected function getBody(string $arg): ?string{
         return $this->body[$arg] ?? null;
+    }
+
+    /**
+     * @return null|string
+     */
+    protected function getRawBody(): ?string{
+        return $this->rawBody ?? null;
     }
 
     /**

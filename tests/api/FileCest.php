@@ -14,6 +14,7 @@ class FileCest
 
     public function _before(ApiTester $apiTester)
     {
+
         $apiTester->haveHttpHeader('Content-Type', 'application/json');
         $apiTester->sendPOST('auth', ['username' => 'username', 'password' => 'password']);
         $response = json_decode($apiTester->grabResponse(), true);
@@ -28,7 +29,6 @@ class FileCest
     public function validateFileAndGetStats(ApiTester $apiTester)
     {
         $apiTester->haveHttpHeader('Authorization', 'Bearer ' . $this->token);
-        $apiTester->haveHttpHeader('Content-Type','application/x-binary');
         $apiTester->sendPOST('file', 'id,sms_phone
 1,27831234567
 2,831234561

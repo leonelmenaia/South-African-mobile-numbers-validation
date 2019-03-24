@@ -4,6 +4,7 @@ namespace app\modules\v1\controllers;
 
 use app\modules\v1\components\Exceptions\ActiveRecordNotFoundException;
 use app\modules\v1\models\File;
+use Yii;
 use yii\base\InvalidArgumentException;
 use yii\db\Exception;
 
@@ -52,8 +53,7 @@ class FileController extends BaseController
      */
     public function actionValidate()
     {
-
-        $file = file_get_contents('php://input');
+        $file = $this->getRawBody();
 
         if(empty($file)){
             return $this->response->falseMissingParams();
