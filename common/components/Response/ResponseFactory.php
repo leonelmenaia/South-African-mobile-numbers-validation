@@ -31,7 +31,7 @@ class ResponseFactory
         ];
     }
 
-    public function false(array $data = [],
+    public function false(?array $data = [],
                           string $type = 'NO_TYPE_PROVIDED',
                           string $message = 'No message provided.',
                           int $http_status = HttpStatus::HTTP_BAD_REQUEST)

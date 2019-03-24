@@ -4,6 +4,7 @@ namespace app\modules\v1\models;
 
 use app\common\exceptions\ActiveRecordNotFoundException;
 use app\common\exceptions\SaveModelException;
+use app\common\utils\TimeUtils;
 use app\common\utils\Utils;
 use Exception;
 use Yii;
@@ -56,6 +57,16 @@ class File extends ActiveRecord
     public function getPhoneNumbers(): ActiveQuery
     {
         return $this->hasMany(PhoneNumber::className(), ['file_id' => 'id']);
+    }
+
+    public function beforeSave($insert) : bool
+    {
+
+        if ($insert) {
+            $this->created_at = TimeUtils::now();
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace app\modules\v1\models;
 use app\common\exceptions\SaveModelException;
 use app\common\utils\TimeUtils;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -89,9 +90,14 @@ class PhoneNumberFix extends ActiveRecord
      * @param int|null $phone_id
      * @return string
      * @throws SaveModelException
+     * @throws InvalidArgumentException
      */
     public static function fixNumber(string $number, int $phone_id = null): ?string
     {
+
+        if(empty($number)){
+            throw new InvalidArgumentException();
+        }
 
         if (PhoneNumber::isNumberValid($number)) {
             return null;

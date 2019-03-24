@@ -32,7 +32,7 @@ class PhoneNumberController extends BaseController
             $result = $phone_number->toArray();
             $result['fixes'] = $phone_number_fix;
         } catch(InvalidArgumentException $e){
-            return $this->getResponse()->false(null, 'INVALID_NUMBER');
+            return $this->getResponse()->false([], 'INVALID_NUMBER');
         } catch(Exception $e){
             return $this->getResponse()->falseServerError();
         }

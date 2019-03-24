@@ -25,6 +25,7 @@ class FileTest extends BaseTest
         $file['download'] = File::getDownloadLink($file['id']);
 
         $expected['id'] = $file['id'];
+        $expected['created_at'] = $file['created_at'];
         $expected['stats'] =  [
             'total' => 4,
             'validated' => 1,
@@ -57,6 +58,7 @@ class FileTest extends BaseTest
         $file['stats'] = File::getStats($file['id']);
 
         $expected['id'] = $file['id'];
+        $expected['created_at'] = $file['created_at'];
         $expected['stats'] =  [
             'total' => 1,
             'validated' => 1,

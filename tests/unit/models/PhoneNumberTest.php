@@ -73,7 +73,7 @@ class PhoneNumberTest extends BaseTest
 
     public function testValidateCorrectNumberWithNonDigitsAndNoCountryIndicative()
     {
-        $phone_number = '8ahsadhjahjkhjk31  2345  67shjadajksdjkh';
+        $phone_number = ' 8ahsadhjahjkhjk31  2345  67shjadajksdjkh ';
 
         $result = PhoneNumber::validateNumber($phone_number);
 

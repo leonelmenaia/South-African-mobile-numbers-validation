@@ -66,7 +66,7 @@ class FileController extends BaseController
             $file['stats'] = File::getStats($file['id']);
             $file['download'] = File::getDownloadLink($file['id']);
         } catch(InvalidArgumentException $e){
-            return $this->getResponse()->false(null, 'INVALID_ARGUMENT',$e->getMessage());
+            return $this->getResponse()->false([], 'INVALID_ARGUMENT',$e->getMessage());
         } catch( Exception $e){
             return $this->getResponse()->falseServerError();
         }
