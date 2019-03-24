@@ -2,6 +2,7 @@ actor: ApiTester
 modules:
     enabled:
         - REST:
-            url: http://localhost:80/v1/
+            #docker nginx service name
+            url: http://web/v1/
             depends: PhpBrowser
             part: Json
