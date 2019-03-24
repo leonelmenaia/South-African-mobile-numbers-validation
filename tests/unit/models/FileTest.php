@@ -14,10 +14,10 @@ class FileTest extends BaseTest
 
         $data = [
             ['id','sms_phone'],
-            ['1','27831234567'],
-            ['2','831234561'],
-            ['3','831sadadaasda234dadsada5adasdadad62'],
-            ['4','1213131312311312'],
+            ['1','27831234561'],
+            ['2','831234562'],
+            ['3','831sadadaasda234dadsada5adasdadad63'],
+            ['4','1213131312311314'],
         ];
 
         $file = File::validateFile($data)->toArray();
@@ -143,6 +143,38 @@ class FileTest extends BaseTest
         $link = File::getDownloadLink($file->id);
 
         $this->assertEquals(null, $link);
+
+    }
+
+    public function testValidateFileWithSameNumberTwoTimes(){
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $data = [
+            ['id','sms_phone'],
+            ['1','27831234561'],
+            ['2','831234562'],
+            ['3','831sadadaasda134dadsada5adasdadad63'],
+            ['4','27831234561'],
+        ];
+
+        $file = File::validateFile($data)->toArray();
+
+    }
+
+    public function testValidateFileWithSameIdentifierTwoTimes(){
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $data = [
+            ['id','sms_phone'],
+            ['1','27831234567'],
+            ['2','831234561'],
+            ['3','831sadadaasda234dadsada5adasdadad62'],
+            ['1','1213131312311312'],
+        ];
+
+        $file = File::validateFile($data)->toArray();
 
     }
 

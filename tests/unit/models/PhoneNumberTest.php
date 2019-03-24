@@ -122,13 +122,22 @@ class PhoneNumberTest extends BaseTest
         $this->assertEquals($expected->getAttributes(), $result->getAttributes());
     }
 
-    /*public function testValidate2NumbersWithSameIdentifier(){
+    public function testValidateSameIdentifierTwoTimes(){
 
         $this->expectException(InvalidArgumentException::class);
 
         $result = PhoneNumber::validateNumber('27831234567',9999);
         $result = PhoneNumber::validateNumber('27831234517',9999);
 
-    }*/
+    }
+
+    public function testValidateSameNumberTwoTimes(){
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $result = PhoneNumber::validateNumber('27831234567');
+        $result = PhoneNumber::validateNumber('27831234567');
+
+    }
 
 }

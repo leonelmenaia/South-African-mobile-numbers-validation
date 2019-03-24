@@ -26,6 +26,28 @@ class FileCest
 
     }
 
+    public function validateFileWithSameNumberTwoTimes(ApiTester $apiTester){
+        $apiTester->haveHttpHeader('Authorization', 'Bearer ' . $this->token);
+        $apiTester->sendPOST('file', 'id,sms_phone
+1,27831234567
+2,831234561
+3,831sadadaasda234dadsada5adasdadad62
+4,27831234567');
+        $apiTester->seeResponseCodeIs(HttpCode::BAD_REQUEST);
+        $apiTester->seeResponseIsJson();
+    }
+
+    public function validateFileWithSameIdentifierTwoTimes(ApiTester $apiTester){
+        $apiTester->haveHttpHeader('Authorization', 'Bearer ' . $this->token);
+        $apiTester->sendPOST('file', 'id,sms_phone
+1,27831234567
+2,831234561
+3,831sadadaasda234dadsada5adasdadad62
+1,1213131312311312');
+        $apiTester->seeResponseCodeIs(HttpCode::BAD_REQUEST);
+        $apiTester->seeResponseIsJson();
+    }
+
     public function validateFileAndGetStats(ApiTester $apiTester)
     {
         $apiTester->haveHttpHeader('Authorization', 'Bearer ' . $this->token);

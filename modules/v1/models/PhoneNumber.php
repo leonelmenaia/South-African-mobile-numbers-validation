@@ -67,10 +67,31 @@ class PhoneNumber extends ActiveRecord
         ];
     }
 
-    public function beforeSave($insert) : bool
+    public function beforeSave($insert): bool
     {
 
+        $phone_number = PhoneNumber::findOne(['number' => $this->number]);
+
+        //avoid saving the same number
+        //if the number cannot be validated it will be checked on insert
+        //otherwise it needs to check if the number is validated
+        //this verification prevents from throwing exception while fixing the number and saving multiple times
+        if (($insert && !empty($phone_number) && !$phone_number->validated) ||
+            (!empty($phone_number) && $phone_number->validated)) {
+            throw new InvalidArgumentException('Phone Number ' . $this->number . ' already exists.');
+        }
+
         if ($insert) {
+
+            //avoid saving numbers with same identifier. it can be checked on insert
+            if (!empty($this->identifier)) {
+                $phone_number = PhoneNumber::findOne(['identifier' => $this->identifier]);
+
+                if (!empty($phone_number)) {
+                    throw new InvalidArgumentException('Identifier ' . $this->identifier . ' already exists.');
+                }
+            }
+
             $this->created_at = TimeUtils::now();
         }
 
@@ -108,22 +129,14 @@ class PhoneNumber extends ActiveRecord
                                           int $file_id = null): PhoneNumber
     {
 
-        if(empty($number)){
+        if (empty($number)) {
             throw new InvalidArgumentException();
         }
 
-        /*if(!empty($identifier)){
-            $phone_number = PhoneNumber::findOne(['identifier' => $identifier]);
-
-            if(!empty($phone_number)){
-                throw new InvalidArgumentException('Identifier ' . $identifier . ' already exists.');
-            }
-        }*/
-
-        if(!empty($file_id)){
+        if (!empty($file_id)) {
             $file = File::findOne(['id' => $file_id]);
 
-            if(empty($file)){
+            if (empty($file)) {
                 throw new ActiveRecordNotFoundException(File::class, $file_id);
             }
         }
@@ -147,7 +160,7 @@ class PhoneNumber extends ActiveRecord
 
                 $model->validated = true;
 
-                if(!$model->save()){
+                if (!$model->save()) {
                     throw new SaveModelException($model->getErrors());
                 }
 
@@ -168,7 +181,7 @@ class PhoneNumber extends ActiveRecord
             $model->number = $new_number;
             $model->validated = true;
 
-            if(!$model->save()){
+            if (!$model->save()) {
                 throw new SaveModelException($model->getErrors());
             }
 
