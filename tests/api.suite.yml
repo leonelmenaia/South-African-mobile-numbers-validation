@@ -5,3 +5,7 @@ modules:
             #docker nginx service name
             url: http://web/v1/
             part: Json
+            depends: PhpBrowser
+            entryScript: index-test.php
+        #- Yii2:
+        #    configFile: 'config/test.php'

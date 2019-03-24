@@ -1,7 +1,7 @@
 OLX Backend Challenge
 ==============
 
-This challenge consists on a basic API that can validate phone numbers.
+This challenge consists on a basic JSON API that can validate phone numbers.
 
 ## Table of Contents
 
@@ -13,12 +13,6 @@ This challenge consists on a basic API that can validate phone numbers.
 * [Shortcuts](#shortcuts)
 
 
-## Local Development
-
-You need [Docker](https://docker.com) installed first.
-
-The local project is meant to be run through docker-compose to provide a seamless development environment between every developer machine.
-
 ### Features
 
 I used a MVC framework for PHP. 
@@ -29,14 +23,39 @@ I decided to implement api version control. The version 1 of the API is availabl
 
 I implemented Unit tests that test specific features (model functions) of the API, and API tests, that test endpoint calling with correct params.
 
+I implemented the "validate file" endpoint as a binary POST endpoint. This is what makes sense for a JSON API. The other way of implementing it would be a multipart/form-data and the API doesn't have form-data requests.
+
 ### Notes
 
-I didn't implement CI/CD so the environment variables are public in the repository. This is not optimal and in a work case, the code would need to pull the variables from somewhere.
+The environment variables are public in the repository. This may be fine for a local project with local databases, but it would not be optimal in a public web service. For that I would need to store the variables using CI/CD and pull them to the project. In this challenge there was no need to do that. 
 
 I only implemented two ways of fixing phone numbers. Removing non digits and adding the full country indicative. For me, those seem to be the ideal. It doesn't make sense to add a single country indicative number or reversing the number. It would only produce invalid numbers.
 
 I focused on South African numbers and didn't implement other types of numbers.
+
+### Endpoints
+
+For the full documentation of each endpoint, click here:
+www.google.com
+
+http://localhost:8080/v1/auth POST
+Endpoint to authenticate the client with an username and password. The user will receive a JWT and the expiration date.
+
+http://localhost:8080/v1/phone POST 
+Endpoint that receives a single phone number and returns if it's valid, invalid or if it was fixed and how so.
+
+http://localhost:8080/v1/file POST
+Endpoint that receives a binary file (CSV) and reads it to validate phone numbers. It will return the file id, file stats and a downloadable link of a JSON with all the info from the phone numbers, if they were valid, invalid or if they were fixed.
+
+http://localhost:8080/v1/file/{id} GET
+Endpoint to get details about a specific file. It will return the file id, file stats and a downloadable link of a JSON with all the info from the phone numbers, if they were valid, invalid or if they were fixed.
+
+
 ### Running the project
+
+You need [Docker](https://docker.com) installed first.
+
+The local project is meant to be run through docker-compose to provide a seamless development environment between every developer machine.
 
 Run
 
@@ -46,7 +65,7 @@ to initiate the following:
 * NGINX server (localhost:8080)
 * PHP7 
 * Database (localhost:3306)
-* Test Database
+* Database (localhost:3307)
 * PhpMyAdmin (localhost:8000)
 
 ## Shortcuts

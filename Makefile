@@ -15,6 +15,7 @@ stop:
 space:
 	docker rmi $$(docker images --filter "dangling=true" -q --no-trunc); docker rm $$(docker ps -qa --no-trunc --filter "status=exited"); docker volume rm $$(docker volume ls -qf dangling=true);
 
+FILE=
 test:
-	docker-compose run php ./vendor/bin/codecept run
+	docker-compose run php ./vendor/bin/codecept run $(FILE)
 

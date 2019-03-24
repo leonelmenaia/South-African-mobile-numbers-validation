@@ -12,6 +12,11 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'modules' => [
+        'v1' => [
+            'class' => 'app\modules\v1\Module',
+        ],
+    ],
     'language' => 'en-US',
     'components' => [
         'db' => $db,
@@ -22,20 +27,28 @@ return [
             'basePath' => __DIR__ . '/../web/assets',
         ],
         'urlManager' => [
+            'enablePrettyUrl' => false,
             'showScriptName' => true,
+            'rules' => [
+                'POST test/v1/auth' => 'v1/credential/auth',
+                'GET test/v1/file/<id:\d+>' => 'v1/file/details',
+                'POST test/v1/file' => 'v1/file/validate',
+                'POST test/v1/phone' => 'v1/phone-number/validate',
+            ]
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Credential',
+            'enableAutoLogin' => false,
         ],
         'request' => [
-            'cookieValidationKey' => 'test',
+            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'cookieValidationKey' => 'wp1TCepyhg7qBXiQYA5Wcba2zo2FUAla',
             'enableCsrfValidation' => false,
-            // but if you absolutely need it set cookie domain to localhost
-            /*
-            'csrfCookie' => [
-                'domain' => 'localhost',
-            ],
-            */
+        ],
+        'response' => [
+            'format' => yii\web\Response::FORMAT_JSON,
+            'charset' => 'UTF-8',
+            'class' => 'yii\web\Response'
         ],
     ],
     'params' => $params,

@@ -14,10 +14,10 @@ class FileTest extends BaseTest
 
         $data = [
             ['id','sms_phone'],
-            ['123','27831234567'],
-            ['123','831234561'],
-            ['123','831sadadaasda234dadsada5adasdadad62'],
-            ['123','1213131312311312'],
+            ['1','27831234567'],
+            ['2','831234561'],
+            ['3','831sadadaasda234dadsada5adasdadad62'],
+            ['4','1213131312311312'],
         ];
 
         $file = File::validateFile($data)->toArray();

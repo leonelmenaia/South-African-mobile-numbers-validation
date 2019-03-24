@@ -15,7 +15,11 @@ $required_envs = [
     'MYSQL_USER',
     'MYSQL_PASSWORD',
     'MYSQL_ROOT_PASSWORD',
-    'PMA_HOST',
+    'TEST_MYSQL_HOST',
+    'TEST_MYSQL_DATABASE',
+    'TEST_MYSQL_USER',
+    'TEST_MYSQL_PASSWORD',
+    'TEST_MYSQL_ROOT_PASSWORD',
     'JWT_TOKEN'
 ];
 

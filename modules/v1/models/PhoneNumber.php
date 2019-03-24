@@ -112,6 +112,14 @@ class PhoneNumber extends ActiveRecord
             throw new InvalidArgumentException();
         }
 
+        /*if(!empty($identifier)){
+            $phone_number = PhoneNumber::findOne(['identifier' => $identifier]);
+
+            if(!empty($phone_number)){
+                throw new InvalidArgumentException('Identifier ' . $identifier . ' already exists.');
+            }
+        }*/
+
         if(!empty($file_id)){
             $file = File::findOne(['id' => $file_id]);
 
