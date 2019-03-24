@@ -38,18 +38,6 @@ I focused on South African numbers and didn't implement other types of numbers.
 For the full documentation of each endpoint, click here:
 www.google.com
 
-http://localhost:8080/v1/auth POST
-Endpoint to authenticate the client with an username and password. The user will receive a JWT and the expiration date.
-
-http://localhost:8080/v1/phone POST 
-Endpoint that receives a single phone number and returns if it's valid, invalid or if it was fixed and how so.
-
-http://localhost:8080/v1/file POST
-Endpoint that receives a binary file (CSV) and reads it to validate phone numbers. It will return the file id, file stats and a downloadable link of a JSON with all the info from the phone numbers, if they were valid, invalid or if they were fixed.
-
-http://localhost:8080/v1/file/{id} GET
-Endpoint to get details about a specific file. It will return the file id, file stats and a downloadable link of a JSON with all the info from the phone numbers, if they were valid, invalid or if they were fixed.
-
 | Endpoint                           | Method    | Description                                                                                                                                   |
 | :---                               | :---    | :---                                                                                                                                           |
 | http://localhost:8080/v1/auth      |  POST   | Endpoint to authenticate the client with an username and password. The user will receive a JWT and the expiration date. |
