@@ -2,8 +2,8 @@
 
 namespace app\modules\v1\models;
 
-use app\common\exceptions\SaveModelException;
-use app\common\utils\TimeUtils;
+use app\modules\v1\components\Exceptions\SaveModelException;
+use app\modules\v1\components\Utils\TimeUtils;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
@@ -80,7 +80,7 @@ class PhoneNumberFix extends ActiveRecord
      */
     public function getPhone(): ActiveQuery
     {
-        return $this->hasOne(PhoneNumber::className(), ['id' => 'phone_id']);
+        return $this->hasOne(PhoneNumber::class, ['id' => 'phone_id']);
     }
 
     /**

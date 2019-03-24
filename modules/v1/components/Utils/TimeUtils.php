@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\utils;
+namespace app\modules\v1\components\Utils;
 
 use DateTime;
 

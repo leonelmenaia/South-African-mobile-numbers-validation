@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\exceptions;
+namespace app\modules\v1\components\Exceptions;
 
 use BadMethodCallException;
 

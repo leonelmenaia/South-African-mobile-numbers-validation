@@ -2,10 +2,10 @@
 
 namespace app\modules\v1\models;
 
-use app\common\exceptions\NotImplementedException;
-use app\common\exceptions\SaveModelException;
-use app\common\utils\TimeUtils;
-use app\common\exceptions\ActiveRecordNotFoundException;
+use app\modules\v1\components\Exceptions\ActiveRecordNotFoundException;
+use app\modules\v1\components\Exceptions\NotImplementedException;
+use app\modules\v1\components\Exceptions\SaveModelException;
+use app\modules\v1\components\Utils\TimeUtils;
 use Exception;
 use Yii;
 use Firebase\JWT\JWT;
@@ -104,7 +104,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
             'exp' => $exp
         ];
 
-        $jwt = JWT::encode($payload, JWT_TOKEN);
+        $jwt = JWT::encode($payload, getenv('JWT_TOKEN'));
 
         return [
             'jwt' => $jwt,
@@ -145,7 +145,7 @@ class Credential extends ActiveRecord implements IdentityInterface, RateLimitInt
         $token = $matches[1] ?? null;
 
         try{
-            $jwt = (array) JWT::decode($token, JWT_TOKEN, ['HS256']);
+            $jwt = (array) JWT::decode($token, getenv('JWT_TOKEN'), ['HS256']);
 
             $sub = $jwt['sub'] ?? null;
             $exp = $jwt['exp'] ?? null;

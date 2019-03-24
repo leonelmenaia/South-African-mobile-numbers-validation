@@ -2,8 +2,8 @@
 
 namespace tests\unit\models;
 
-use app\common\exceptions\ActiveRecordNotFoundException;
-use app\common\utils\Utils;
+use app\modules\v1\components\Exceptions\ActiveRecordNotFoundException;
+use app\modules\v1\components\Utils\Utils;
 use app\modules\v1\models\File;
 use yii\base\InvalidArgumentException;
 

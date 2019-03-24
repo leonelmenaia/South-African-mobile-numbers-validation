@@ -2,8 +2,7 @@
 
 namespace app\modules\v1\controllers;
 
-use app\common\controllers\BaseController;
-use app\common\exceptions\ActiveRecordNotFoundException;
+use app\modules\v1\components\Exceptions\ActiveRecordNotFoundException;
 use app\modules\v1\models\File;
 use yii\base\InvalidArgumentException;
 use yii\db\Exception;

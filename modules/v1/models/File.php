@@ -2,10 +2,10 @@
 
 namespace app\modules\v1\models;
 
-use app\common\exceptions\ActiveRecordNotFoundException;
-use app\common\exceptions\SaveModelException;
-use app\common\utils\TimeUtils;
-use app\common\utils\Utils;
+use app\modules\v1\components\Exceptions\ActiveRecordNotFoundException;
+use app\modules\v1\components\Exceptions\SaveModelException;
+use app\modules\v1\components\Utils\TimeUtils;
+use app\modules\v1\components\Utils\Utils;
 use Exception;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -56,7 +56,7 @@ class File extends ActiveRecord
      */
     public function getPhoneNumbers(): ActiveQuery
     {
-        return $this->hasMany(PhoneNumber::className(), ['file_id' => 'id']);
+        return $this->hasMany(PhoneNumber::class, ['file_id' => 'id']);
     }
 
     public function beforeSave($insert) : bool
@@ -260,6 +260,12 @@ class File extends ActiveRecord
 
     }
 
+    /**
+     * Generate JSON file from array. Ignore if it's TEST Environment.
+     *
+     * @param string $file_path
+     * @param array $data
+     */
     public static function createDownloadableFile(string $file_path, array $data){
 
         //in tests we don't need to create the file

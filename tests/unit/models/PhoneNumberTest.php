@@ -2,7 +2,7 @@
 
 namespace tests\unit\models;
 
-use app\common\exceptions\ActiveRecordNotFoundException;
+use app\modules\v1\components\Exceptions\ActiveRecordNotFoundException;
 use app\modules\v1\models\PhoneNumber;
 use yii\base\InvalidArgumentException;
 

@@ -2,10 +2,8 @@
 
 namespace app\modules\v1\controllers;
 
-use app\common\controllers\BaseController;
 use app\modules\v1\models\PhoneNumber;
 use Exception;
-use function PHPSTORM_META\type;
 use yii\base\InvalidArgumentException;
 
 class PhoneNumberController extends BaseController

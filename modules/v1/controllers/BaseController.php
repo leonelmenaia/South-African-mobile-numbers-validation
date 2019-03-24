@@ -1,7 +1,7 @@
 <?php
-namespace app\common\controllers;
+namespace app\modules\v1\controllers;
 
-use app\common\components\Response\ResponseFactory;
+use app\modules\v1\components\Response\ResponseFactory;
 use app\modules\v1\models\Credential;
 use Yii;
 use yii\web\Controller;

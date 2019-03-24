@@ -24,13 +24,15 @@ to run the Unit and API tests.
 
 ### File Structure
 
+
+
 ### Features
 
 I used a MVC framework for PHP. 
 
 I decided to implement the authentication using a Bearer Token. The client uses the Auth endpoint to send a username and password that will match in the database and return the Bearer JWT. After that, the client will need to use the token in the Authorization Header until it expires and the client will need to request a new one.
 
-I decided to implement api version control. The version 1 of the API is available. If needed, it's possible to implement a new version and to keep the first one available until it's safe to disable it.
+I decided to implement API version control. The version 1 of the API is available. If needed, it's possible to implement a new version and to keep the first one available until it's safe to disable it.
 
 I implemented Unit tests that test specific features (model functions) of the API, and API tests, that test endpoint calling with correct params.
 

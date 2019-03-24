@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\components\Response;
+namespace app\modules\v1\components\Response;
 
 /**
  * StatusCodes provides named constants for

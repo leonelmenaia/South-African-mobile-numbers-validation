@@ -2,7 +2,6 @@
 
 namespace app\modules\v1\controllers;
 
-use app\common\controllers\BaseController;
 use app\modules\v1\models\Credential;
 use Exception;
 use yii\web\UnauthorizedHttpException;

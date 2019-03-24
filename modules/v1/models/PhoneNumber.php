@@ -2,9 +2,9 @@
 
 namespace app\modules\v1\models;
 
-use app\common\exceptions\ActiveRecordNotFoundException;
-use app\common\exceptions\SaveModelException;
-use app\common\utils\TimeUtils;
+use app\modules\v1\components\Exceptions\ActiveRecordNotFoundException;
+use app\modules\v1\components\Exceptions\SaveModelException;
+use app\modules\v1\components\Utils\TimeUtils;
 use Exception;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -48,7 +48,7 @@ class PhoneNumber extends ActiveRecord
             [['validated'], 'boolean'],
             [['number'], 'string', 'max' => 100],
             [['created_at'], 'safe'],
-            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::className(), 'targetAttribute' => ['file_id' => 'id']],
+            [['file_id'], 'exist', 'skipOnError' => true, 'targetClass' => File::class, 'targetAttribute' => ['file_id' => 'id']],
         ];
     }
 
@@ -82,7 +82,7 @@ class PhoneNumber extends ActiveRecord
      */
     public function getFile(): ActiveQuery
     {
-        return $this->hasOne(File::className(), ['id' => 'file_id']);
+        return $this->hasOne(File::class, ['id' => 'file_id']);
     }
 
     /**
@@ -90,7 +90,7 @@ class PhoneNumber extends ActiveRecord
      */
     public function getPhoneNumberFixes(): ActiveQuery
     {
-        return $this->hasMany(PhoneNumberFix::className(), ['phone_id' => 'id']);
+        return $this->hasMany(PhoneNumberFix::class, ['phone_id' => 'id']);
     }
 
     /**
