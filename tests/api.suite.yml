@@ -4,5 +4,4 @@ modules:
         - REST:
             #docker nginx service name
             url: http://web/v1/
-            depends: PhpBrowser
             part: Json
