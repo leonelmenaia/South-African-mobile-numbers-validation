@@ -22,6 +22,8 @@ to initiate the following:
 
 to run the Unit and API tests.
 
+### File Structure
+
 ### Features
 
 I used a MVC framework for PHP. 
