@@ -3,15 +3,28 @@ OLX Backend Challenge
 
 This challenge consists on a basic JSON API that can validate phone numbers.
 
-## Table of Contents
+### Running The Project
 
-* [Local Development](#local-development)
-* [Running on Cloud](#running-on-cloud)
-* [API consumption](#api-consumption)
-  * [Client communication with the API](#client-communication-with-the-api)
-  * [Client API Authorization](#client-api-authorization)
-* [Shortcuts](#shortcuts)
+You need [Docker](https://docker.com) installed first.
 
+The local project is meant to be run through docker-compose to provide a seamless development environment between every developer machine.
+
+Run
+
+`make start`
+
+to initiate the following:
+* NGINX server (localhost:8080)
+* PHP7 
+* Database (localhost:3306)
+* Database (localhost:3307)
+* PhpMyAdmin (localhost:8000)
+
+Run 
+
+`make test`
+
+to run the Unit and API tests.
 
 ### Features
 
@@ -45,22 +58,6 @@ www.google.com
 | http://localhost:8080/v1/file      |  POST | Endpoint that receives a binary file (CSV) and reads it to validate phone numbers. It will return the file id, file stats and a downloadable link of a JSON with all the info from the phone numbers, if they were valid, invalid or if they were fixed. |
 | http://localhost:8080/v1/file/{id} |  GET  | Endpoint to get details about a specific file. It will return the file id, file stats and a downloadable link of a JSON with all the info from the phone numbers, if they were valid, invalid or if they were fixed. |
 
-### Running the project
-
-You need [Docker](https://docker.com) installed first.
-
-The local project is meant to be run through docker-compose to provide a seamless development environment between every developer machine.
-
-Run
-
-`make start`
-
-to initiate the following:
-* NGINX server (localhost:8080)
-* PHP7 
-* Database (localhost:3306)
-* Database (localhost:3307)
-* PhpMyAdmin (localhost:8000)
 
 ## Shortcuts
 
