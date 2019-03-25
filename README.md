@@ -1,7 +1,7 @@
 South African mobile numbers validation
 ==============
 
-This challenge consists on a basic JSON API that can validate phone numbers.
+This challenge consists on a basic PHP JSON API that can validate phone numbers.
 
 ### Running The Project
 
@@ -24,7 +24,7 @@ It may be needed to wait a few seconds for the SQL dumps to complete so that is 
 
 To run the Unit and API tests.
 
-To call the endpoints, it's need to use the /v1/auth endpoint to authenticate, using the following JSON body:
+To call the endpoints, it's needed to use the /v1/auth endpoint to authenticate, using the following JSON body:
 
 
 `{
@@ -55,7 +55,7 @@ PDO MySQL PHP extension helps preventing SQL Injection.
 
 The environment variables are public in the repository. This may be fine for a local project with local databases, but it would not be optimal in a public web service. For that I would need to store the variables using CI/CD and pull them to the project. In this challenge there was no need to do that. 
 
-I only implemented two ways of fixing phone numbers. Removing non digits and adding the full country indicative. For me, those seem to be the ideal. It doesn't make sense to add a single country indicative number or reversing the number. It would only produce invalid numbers.
+I only implemented two ways of fixing phone numbers. Removing non digits and adding the full country indicative. For me, those seem to be the ideal. It doesn't make sense to add a single country indicative number or reverse the number. It would only produce invalid numbers.
 
 It's not possible to validate the same number or the same identifier. It doesn't make sense to save duplicate numbers and ids in a database.
 
@@ -64,7 +64,7 @@ I focused on South African numbers and didn't implement other types of numbers.
 ### Endpoints
 
 For the full documentation of each endpoint, click here:
-www.google.com
+https://documenter.getpostman.com/view/1391010/S17qTVNu
 
 | Endpoint                           | Method    | Description                                                                                                                                   |
 | :---                               | :---    | :---                                                                                                                                           |
