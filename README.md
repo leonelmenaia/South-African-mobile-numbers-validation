@@ -1,4 +1,4 @@
-OLX Backend Challenge
+South African mobile numbers validation
 ==============
 
 This challenge consists on a basic JSON API that can validate phone numbers.
@@ -17,6 +17,8 @@ to initiate the following:
 * Database (localhost:3306)
 * Database (localhost:3307)
 * PhpMyAdmin (localhost:8000)
+
+It may be needed to wait a few seconds for the SQL dumps to complete so that is possible to run tests.
 
 `make test`
 

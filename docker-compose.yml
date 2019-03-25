@@ -9,7 +9,7 @@ services:
     volumes:
       - ./:/var/www/html
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    links:
+    depends_on:
       - database
       - database_test
       - php
@@ -24,6 +24,7 @@ services:
   database:
     container_name: database
     image: mariadb:10.3
+    restart: on-failure
     ports:
       - 3306:3306
     volumes:
@@ -37,6 +38,7 @@ services:
   database_test:
     container_name: database_test
     image: mariadb:10.3
+    restart: on-failure
     ports:
       - 3307:3307
     volumes:
