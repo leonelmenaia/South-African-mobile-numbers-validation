@@ -1,5 +1,8 @@
 container=php
 
+composer-install:
+	composer install --ignore-platform-reqs
+
 start:
 	docker-compose up -d
 
