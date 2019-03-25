@@ -35,8 +35,11 @@ To call the endpoints, it's needed to use the /v1/auth endpoint to authenticate,
 ### File Structure
 
 The main project files are in /modules/v1.
+
 Unit tests are in /tests/unit/models.
+
 API tests are in /tests/api.
+
 Configs are in /config.
 
 ### Features
