@@ -9,6 +9,10 @@ You need [Docker](https://docker.com) installed first.
 
 The local project is meant to be run through docker-compose to provide a seamless development environment between every developer machine.
 
+`make composer-install`
+
+To install all the Composer dependencies. (including the testing library)
+
 `make start`
 
 to initiate the following:
@@ -81,6 +85,7 @@ https://documenter.getpostman.com/view/1391010/S17qTVNu
 
 | Shortcut                       | Description                                                                                                                                      |
 | :---                           | :---                                                                                                                                              |
+| make composer-install          |  Install composer dependencies                                                                                                               |
 | make start                     |  Start the development environment.                                                                                                               |
 | make stop                      |  Stop the development environment.                                                                                                                |
 | make restart                   |  Restart the development environment.                                                                                                             |
