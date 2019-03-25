@@ -19,7 +19,7 @@ to initiate the following:
 * NGINX server (localhost:8080)
 * PHP7 
 * Database (localhost:3306)
-* Database (localhost:3307)
+* Testing Database (localhost:3307)
 * PhpMyAdmin (localhost:8000)
 
 It may be needed to wait a few seconds (only for the first time) for the SQL scripts to complete so that is possible to run tests. 
