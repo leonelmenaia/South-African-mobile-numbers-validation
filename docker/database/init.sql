@@ -103,6 +103,8 @@ ALTER TABLE `file`
 --
 ALTER TABLE `phone_number`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `number` (`number`),
+  ADD UNIQUE KEY `identifier` (`identifier`),
   ADD KEY `fk_phone_number_file` (`file_id`);
 
 --
