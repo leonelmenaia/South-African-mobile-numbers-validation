@@ -11,7 +11,7 @@ The local project is meant to be run through docker-compose to provide a seamles
 
 `make composer-install`
 
-To install all the Composer dependencies. (including the testing library)
+To install all the Composer dependencies.
 
 `make start`
 
