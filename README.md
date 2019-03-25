@@ -32,10 +32,6 @@ To call the endpoints, it's need to use the /v1/auth endpoint to authenticate, u
   "password": "password"
 }`
 
-`make stop`
-
-To stop the docker.
-
 ### File Structure
 
 The main project files are in /modules/v1.
