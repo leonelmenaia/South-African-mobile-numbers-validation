@@ -22,15 +22,28 @@ It may be needed to wait a few seconds for the SQL dumps to complete so that is 
 
 `make test`
 
-to run the Unit and API tests.
+To run the Unit and API tests.
+
+To call the endpoints, it's need to use the /v1/auth endpoint to authenticate, using the following JSON body:
+
+
+`{
+  "username": "username",
+  "password": "password"
+}`
+
+`make stop`
+
+To stop the docker.
 
 ### File Structure
 
-
+The main project files are in /modules/v1.
+Unit tests are in /tests/unit/models.
+API tests are in /tests/api.
+Configs are in /config.
 
 ### Features
-
-I used a MVC framework for PHP. 
 
 I decided to implement the authentication using a Bearer Token. The client uses the Auth endpoint to send a username and password that will match in the database and return the Bearer JWT. After that, the client will need to use the token in the Authorization Header until it expires and the client will need to request a new one.
 
@@ -40,11 +53,15 @@ I implemented Unit tests that test specific features (model functions) of the AP
 
 I implemented the "validate file" endpoint as a binary POST endpoint. This is what makes sense for a JSON API. The other way of implementing it would be a multipart/form-data and the API doesn't have form-data requests.
 
+PDO MySQL PHP extension helps preventing SQL Injection.
+
 ### Notes
 
 The environment variables are public in the repository. This may be fine for a local project with local databases, but it would not be optimal in a public web service. For that I would need to store the variables using CI/CD and pull them to the project. In this challenge there was no need to do that. 
 
 I only implemented two ways of fixing phone numbers. Removing non digits and adding the full country indicative. For me, those seem to be the ideal. It doesn't make sense to add a single country indicative number or reversing the number. It would only produce invalid numbers.
+
+It's not possible to validate the same number or the same identifier. It doesn't make sense to save duplicate numbers and ids in a database.
 
 I focused on South African numbers and didn't implement other types of numbers.
 
