@@ -81,7 +81,7 @@ https://documenter.getpostman.com/view/1391010/S17qTVNu
 | http://localhost:8080/v1/file/{id} |  GET  | Endpoint to get details about a specific file. It will return the file id, file stats and a downloadable link of a JSON with all the info from the phone numbers, if they were valid, invalid or if they were fixed. |
 
 
-## Shortcuts
+### Shortcuts
 
 | Shortcut                       | Description                                                                                                                                      |
 | :---                           | :---                                                                                                                                              |
