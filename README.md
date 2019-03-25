@@ -22,7 +22,7 @@ to initiate the following:
 * Database (localhost:3307)
 * PhpMyAdmin (localhost:8000)
 
-It may be needed to wait a few seconds (only for the first time) for the SQL dumps to complete so that is possible to run tests. 
+It may be needed to wait a few seconds (only for the first time) for the SQL scripts to complete so that is possible to run tests. 
 
 `make test`
 
