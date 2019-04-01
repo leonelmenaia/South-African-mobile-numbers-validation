@@ -33,7 +33,7 @@ tests/_support/_generated
 /.vagrant
 
 #files to download
-/web/files
+/web/files/*
 
 #database data
 /docker/database/data
